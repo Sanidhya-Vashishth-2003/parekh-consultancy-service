@@ -2694,6 +2694,26 @@ async function loadBlogs() {
       `;
     });
     
+    // Setup observer for dynamic blog cards since the main one ran on load
+    setTimeout(() => {
+      const newCards = container.querySelectorAll('.reveal');
+      const blogObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            anime({
+              targets: entry.target,
+              opacity: [0, 1],
+              translateY: [50, 0],
+              duration: 800,
+              easing: 'easeOutExpo'
+            });
+            blogObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      newCards.forEach(card => blogObserver.observe(card));
+    }, 100);
+    
   } catch(e) {
     console.error("Failed to load news:", e);
     noMsg.innerHTML = "Unable to fetch live news at the moment.";
