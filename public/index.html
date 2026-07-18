@@ -1062,36 +1062,36 @@
     <p class="text-sm text-gray-500 mt-2">Sign in to customize your profile and leave reviews.</p>
   </div>
   <div class="flex justify-center mb-6 border-b border-gray-200">
-    <button onclick="switchAuthTab('login')" id="tab-login" class="px-6 py-2 font-headline font-bold text-primary-teal border-b-2 border-primary-teal outline-none transition-all">Log In</button>
-    <button onclick="switchAuthTab('signup')" id="tab-signup" class="px-6 py-2 font-headline font-bold text-gray-400 border-b-2 border-transparent hover:text-gray-600 outline-none transition-all">Sign Up</button>
+    <button onclick="switchAuthTab('login')" id="tab-alpha" class="px-6 py-2 font-headline font-bold text-primary-teal border-b-2 border-primary-teal outline-none transition-all">Log In</button>
+    <button onclick="switchAuthTab('signup')" id="tab-beta" class="px-6 py-2 font-headline font-bold text-gray-400 border-b-2 border-transparent hover:text-gray-600 outline-none transition-all">Sign Up</button>
   </div>
 
   <!-- Login Form -->
-  <div id="auth-section-login">
+  <div id="view-section-alpha">
     <div class="space-y-4 mb-6">
-      <input type="email" id="auth-email-in" placeholder="Email address" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all">
-      <input type="password" id="auth-password-in" placeholder="Password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all">
+      <input type="email" id="input-val-1" placeholder="Email address" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all">
+      <input type="password" id="input-val-2" placeholder="Password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all">
     </div>
-    <button onclick="handleLogin()" id="auth-submit-in" class="w-full bg-dark-emerald text-white font-medium py-3 rounded-lg hover:bg-primary-teal transition-colors shadow-md flex items-center justify-center">
+    <div onclick="handleLogin()" id="action-btn-alpha" role="button" tabindex="0" class="w-full bg-dark-emerald text-white font-medium py-3 rounded-lg hover:bg-primary-teal transition-colors shadow-md flex items-center justify-center cursor-pointer">
       Log In
-    </button>
+    </div>
   </div>
 
   <!-- Signup Form -->
-  <div id="auth-section-signup" class="hidden">
+  <div id="view-section-beta" class="hidden">
     <div class="space-y-4 mb-6">
-      <input type="text" id="auth-name-up" placeholder="Full name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all">
-      <input type="email" id="auth-email-up" placeholder="Email address" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all">
-      <input type="password" id="auth-password-up" placeholder="Password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all">
-      <input type="password" id="auth-password-confirm-up" placeholder="Confirm password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all">
+      <input type="text" id="input-val-3" placeholder="Full name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all">
+      <input type="email" id="input-val-4" placeholder="Email address" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all">
+      <input type="password" id="input-val-5" placeholder="Password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all">
+      <input type="password" id="input-val-6" placeholder="Confirm password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all">
       <div class="space-y-1">
         <label class="block text-xs font-medium text-gray-500">Profile Picture (Optional)</label>
-        <input type="file" id="auth-dp-up" accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-teal/10 file:text-primary-teal hover:file:bg-primary-teal/20">
+        <input type="file" id="input-val-7" accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-teal/10 file:text-primary-teal hover:file:bg-primary-teal/20">
       </div>
     </div>
-    <button onclick="handleSignup()" id="auth-submit-up" class="w-full bg-dark-emerald text-white font-medium py-3 rounded-lg hover:bg-primary-teal transition-colors shadow-md flex items-center justify-center">
+    <div onclick="handleSignup()" id="action-btn-beta" role="button" tabindex="0" class="w-full bg-dark-emerald text-white font-medium py-3 rounded-lg hover:bg-primary-teal transition-colors shadow-md flex items-center justify-center cursor-pointer">
       Create Account
-    </button>
+    </div>
   </div>
 </div>
 
@@ -1918,10 +1918,10 @@ function closeAllModals() {
 }
 
 function switchAuthTab(tab) {
-  const loginForm = document.getElementById('auth-section-login');
-  const signupForm = document.getElementById('auth-section-signup');
-  const tabLogin = document.getElementById('tab-login');
-  const tabSignup = document.getElementById('tab-signup');
+  const loginForm = document.getElementById('view-section-alpha');
+  const signupForm = document.getElementById('view-section-beta');
+  const tabLogin = document.getElementById('tab-alpha');
+  const tabSignup = document.getElementById('tab-beta');
 
   if (tab === 'login') {
     // Animate signup out, login in
@@ -1979,11 +1979,11 @@ function switchAuthTab(tab) {
 }
 
 function handleSignup() {
-  const name = document.getElementById('auth-name-up').value.trim();
-  const email = document.getElementById('auth-email-up').value.trim();
-  const pwd = document.getElementById('auth-password-up').value;
-  const cpwd = document.getElementById('auth-password-confirm-up').value;
-  const dpInput = document.getElementById('auth-dp-up');
+  const name = document.getElementById('input-val-3').value.trim();
+  const email = document.getElementById('input-val-4').value.trim();
+  const pwd = document.getElementById('input-val-5').value;
+  const cpwd = document.getElementById('input-val-6').value;
+  const dpInput = document.getElementById('input-val-7');
 
   if (!name || !email || !pwd) {
     alert("Please fill in all required fields.");
@@ -1996,7 +1996,7 @@ function handleSignup() {
   
   const users = JSON.parse(localStorage.getItem('parekh_users_db')) || {};
   
-  const btn = document.getElementById('auth-submit-up');
+  const btn = document.getElementById('action-btn-beta');
   const originalHtml = btn.innerHTML;
   btn.innerHTML = '<span class="material-symbols-outlined animate-spin mr-2">refresh</span> Creating...';
   
@@ -2041,15 +2041,15 @@ function handleSignup() {
 }
 
 function handleLogin() {
-  const email = document.getElementById('auth-email-in').value.trim();
-  const pwd = document.getElementById('auth-password-in').value;
+  const email = document.getElementById('input-val-1').value.trim();
+  const pwd = document.getElementById('input-val-2').value;
 
   if (!email || !pwd) {
     alert("Please enter both email and password.");
     return;
   }
 
-  const btn = document.getElementById('auth-submit-in');
+  const btn = document.getElementById('action-btn-alpha');
   const originalHtml = btn.innerHTML;
   btn.innerHTML = '<span class="material-symbols-outlined animate-spin mr-2">refresh</span> Logging in...';
 
