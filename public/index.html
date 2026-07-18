@@ -2793,9 +2793,65 @@ async function loadBlogs() {
 }
 loadBlogs();
 
-// Remove legacy JS scroll functions since CSS Marquee handles it now
+// -----------------------------------------------------------------------------
+// FUNCTIONAL CONTACT FORM (via FormSubmit AJAX)
+// -----------------------------------------------------------------------------
+document.getElementById('contact-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const submitBtn = document.getElementById('submit-btn');
+  const btnText = document.getElementById('btn-text');
+  const btnIcon = document.getElementById('btn-icon');
+  const successMsg = document.getElementById('success-msg');
+  
+  // Save original state
+  const originalText = btnText.innerText;
+  
+  // Loading state
+  btnText.innerText = "Sending...";
+  btnIcon.innerText = "sync";
+  btnIcon.classList.add('animate-spin');
+  submitBtn.disabled = true;
+  submitBtn.classList.add('opacity-70');
 
+  const payload = {
+    name: document.getElementById('name-input').value,
+    email: document.getElementById('email-input').value,
+    phone: document.getElementById('phone-input').value,
+    service: document.getElementById('service-select').value,
+    message: document.getElementById('message-input').value,
+    _subject: "New Lead from Parekh Consultancy Website!"
+  };
 
+  try {
+    const response = await fetch("https://formsubmit.co/ajax/vashisthsanidhya@gmail.com", {
+      method: "POST",
+      headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+    
+    if (response.ok) {
+      // Hide all form inputs and the submit button
+      Array.from(this.children).forEach(child => {
+        if (child.id !== 'success-msg') child.classList.add('hidden');
+      });
+      // Show success msg
+      successMsg.classList.remove('hidden');
+    } else {
+      throw new Error("Network response was not ok");
+    }
+  } catch(error) {
+    alert("Oops! Something went wrong. Please try again later.");
+    btnText.innerText = originalText;
+    btnIcon.innerText = "arrow_forward";
+    btnIcon.classList.remove('animate-spin');
+    submitBtn.disabled = false;
+    submitBtn.classList.remove('opacity-70');
+  }
+});
 // -----------------------------------------------------------------------------
 // CHATBOT LOGIC
 // -----------------------------------------------------------------------------
