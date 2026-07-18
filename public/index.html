@@ -422,6 +422,16 @@
     transform: scale(1.1) translateZ(0);
   }
 
+  /* ===== MOBILE TACTILE FEEDBACK ===== */
+  a, button, .service-card, .feature-card, .quick-action-tile {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tactile-active:active {
+    transform: scale(0.96) !important;
+    transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
   /* ===== CHATBOT (GPU composited) ===== */
   #chat-widget {
     position: fixed;
@@ -632,6 +642,36 @@
     </div>
   </div>
 </div>
+</section>
+
+<!-- ===== MOBILE QUICK ACTIONS (STITCH DESIGN) ===== -->
+<section class="lg:hidden px-6 pb-12 pt-4 bg-white relative z-20">
+  <div class="grid grid-cols-2 gap-4">
+    <button onclick="document.getElementById('tax-calculator').scrollIntoView();" class="quick-action-tile tactile-active bg-primary-teal/5 border border-primary-teal/20 rounded-2xl p-4 flex flex-col items-center justify-center gap-3 shadow-sm transform hover:-translate-y-1 transition-transform mobile-tile-animate opacity-0 translate-y-4">
+      <div class="w-12 h-12 bg-primary-teal rounded-full flex items-center justify-center text-white shadow-md shadow-primary-teal/30">
+        <span class="material-symbols-outlined text-2xl">calculate</span>
+      </div>
+      <span class="font-headline font-bold text-sm text-dark-text text-center">Tax Calculator</span>
+    </button>
+    <button onclick="openBookingModal()" class="quick-action-tile tactile-active bg-primary-teal/5 border border-primary-teal/20 rounded-2xl p-4 flex flex-col items-center justify-center gap-3 shadow-sm transform hover:-translate-y-1 transition-transform mobile-tile-animate opacity-0 translate-y-4">
+      <div class="w-12 h-12 bg-dark-emerald rounded-full flex items-center justify-center text-white shadow-md shadow-dark-emerald/30">
+        <span class="material-symbols-outlined text-2xl">assignment</span>
+      </div>
+      <span class="font-headline font-bold text-sm text-dark-text text-center">GST Registration</span>
+    </button>
+    <button onclick="openBookingModal()" class="quick-action-tile tactile-active bg-primary-teal/5 border border-primary-teal/20 rounded-2xl p-4 flex flex-col items-center justify-center gap-3 shadow-sm transform hover:-translate-y-1 transition-transform mobile-tile-animate opacity-0 translate-y-4">
+      <div class="w-12 h-12 bg-gold-accent rounded-full flex items-center justify-center text-white shadow-md shadow-gold-accent/30">
+        <span class="material-symbols-outlined text-2xl">receipt_long</span>
+      </div>
+      <span class="font-headline font-bold text-sm text-dark-text text-center">ITR Filing</span>
+    </button>
+    <button onclick="document.getElementById('blog').scrollIntoView();" class="quick-action-tile tactile-active bg-primary-teal/5 border border-primary-teal/20 rounded-2xl p-4 flex flex-col items-center justify-center gap-3 shadow-sm transform hover:-translate-y-1 transition-transform mobile-tile-animate opacity-0 translate-y-4">
+      <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary-teal shadow-md border border-gray-100">
+        <span class="material-symbols-outlined text-2xl">newspaper</span>
+      </div>
+      <span class="font-headline font-bold text-sm text-dark-text text-center">Latest Updates</span>
+    </button>
+  </div>
 </section>
 
 <!-- ===== ABOUT SECTION ===== -->
@@ -1545,6 +1585,18 @@ document.addEventListener('DOMContentLoaded', () => {
     pFrag.appendChild(particle);
   }
   particlesContainer.appendChild(pFrag);
+
+  // ===== MOBILE TILES STAGGER =====
+  if (window.innerWidth < 1024) {
+    anime({
+      targets: '.mobile-tile-animate',
+      opacity: [0, 1],
+      translateY: [20, 0],
+      delay: anime.stagger(100, { start: 1000 }),
+      easing: 'easeOutExpo',
+      duration: 800
+    });
+  }
 
   // ===== MOBILE MENU (anime.js) =====
   const mobileBtn = document.getElementById('mobile-menu-btn');
