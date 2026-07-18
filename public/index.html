@@ -210,6 +210,20 @@
     90% { opacity: 0.2; }
     100% { transform: translate3d(0, -10vh, 0); opacity: 0; }
   }
+  @keyframes marqueeSlide {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marqueeSlide 30s linear infinite;
+    will-change: transform;
+  }
+  .marquee-container:hover .marquee-track,
+  .marquee-container:active .marquee-track {
+    animation-play-state: paused;
+  }
 
   /* ===== SCROLL REVEAL (anime.js powered — GPU composited) ===== */
   .reveal {
@@ -1018,11 +1032,11 @@
     <div class="w-20 h-1 bg-gradient-to-r from-primary-teal to-gold-accent mx-auto mt-4 rounded-full"></div>
   </div>
   
-  <div class="relative w-full overflow-hidden">
+  <div class="relative w-full overflow-hidden marquee-container">
     <!-- Left Gradient Fade -->
-    <div class="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+    <div class="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
     
-    <div class="flex overflow-x-auto gap-6 pb-8 pt-4 snap-x snap-mandatory hide-scroll" id="blog-container" style="-ms-overflow-style: none; scrollbar-width: none;">
+    <div class="marquee-track gap-6 pb-8 pt-4 hide-scroll" id="blog-container">
       <!-- Blogs will be injected here via JS -->
       <div class="w-full text-center py-10 text-gray-500 hidden" id="no-blog-msg">
         <span class="material-symbols-outlined text-4xl mb-2 animate-spin text-primary-teal">refresh</span>
@@ -2644,6 +2658,7 @@ async function loadBlogs() {
     navBtns.classList.remove('hidden');
     
     let count = 0;
+    let htmlString = '';
     articles.forEach((article, idx) => {
       // Filter out removed or empty articles
       if (article.title === "[Removed]" || !article.title) return;
@@ -2674,15 +2689,16 @@ async function loadBlogs() {
       ];
       const img = article.urlToImage || fallbackImages[idx % fallbackImages.length];
 
-      container.innerHTML += `
-        <div class="min-w-[85vw] sm:min-w-[320px] md:min-w-[360px] snap-center bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 reveal delay-${(idx%3)*100} flex flex-col">
-          <div class="h-44 overflow-hidden relative">
+      // Remove .reveal so the marquee isn't interrupted by intersection observers hiding them initially
+      htmlString += `
+        <div class="w-[85vw] sm:w-[320px] md:w-[360px] bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col">
+          <div class="h-44 overflow-hidden relative group">
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 pointer-events-none"></div>
-            <img src="${img}" alt="Tax News" class="w-full h-full object-cover transition-transform duration-700 hover:scale-110">
+            <img src="${img}" alt="Tax News" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
             <span class="absolute bottom-3 left-4 z-20 text-[10px] font-bold text-white bg-gold-accent px-2 py-1 rounded-sm uppercase tracking-wider">${source}</span>
           </div>
           <div class="p-6 flex-1 flex flex-col">
-            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 block flex items-center gap-1">
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1">
               <span class="material-symbols-outlined text-[14px]">schedule</span> ${dateStr}
             </span>
             <h4 class="text-lg font-headline font-bold text-dark-text mb-3 line-clamp-3 leading-snug hover:text-primary-teal transition-colors flex-1">${title}</h4>
@@ -2694,33 +2710,8 @@ async function loadBlogs() {
       `;
     });
     
-    // Setup observer for dynamic blog cards since the main one ran on load
-    setTimeout(() => {
-      const newCards = container.querySelectorAll('.reveal');
-      const blogObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            anime({
-              targets: entry.target,
-              opacity: [0, 1],
-              translateY: [50, 0],
-              duration: 800,
-              easing: 'easeOutExpo'
-            });
-            blogObserver.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.1 });
-      newCards.forEach(card => blogObserver.observe(card));
-    }, 100);
-    
-    // Auto-scroll logic
-    const autoScrollSpeed = 3500;
-    container.addEventListener('mouseenter', stopBlogAutoScroll);
-    container.addEventListener('mouseleave', startBlogAutoScroll);
-    container.addEventListener('touchstart', stopBlogAutoScroll, {passive: true});
-    container.addEventListener('touchend', startBlogAutoScroll, {passive: true});
-    startBlogAutoScroll();
+    // Duplicate the HTML string exactly once to create a seamless infinite loop in the marquee
+    container.innerHTML = htmlString + htmlString;
     
   } catch(e) {
     console.error("Failed to load news:", e);
@@ -2731,29 +2722,8 @@ async function loadBlogs() {
 }
 loadBlogs();
 
-function scrollBlog(dir) {
-  const container = document.getElementById('blog-container');
-  const scrollAmount = window.innerWidth < 640 ? window.innerWidth * 0.85 : 360 + 24; // Card width + gap
-  
-  if (dir === 1 && container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
-    // Loop back to start
-    container.scrollTo({ left: 0, behavior: 'smooth' });
-  } else if (dir === -1 && container.scrollLeft <= 10) {
-    // Loop to end
-    container.scrollTo({ left: container.scrollWidth, behavior: 'smooth' });
-  } else {
-    container.scrollBy({ left: dir * scrollAmount, behavior: 'smooth' });
-  }
-}
+// Remove legacy JS scroll functions since CSS Marquee handles it now
 
-let blogAutoScrollInterval;
-function startBlogAutoScroll() {
-  stopBlogAutoScroll(); // ensure no duplicates
-  blogAutoScrollInterval = setInterval(() => scrollBlog(1), 3500);
-}
-function stopBlogAutoScroll() {
-  clearInterval(blogAutoScrollInterval);
-}
 
 // -----------------------------------------------------------------------------
 // CHATBOT LOGIC
