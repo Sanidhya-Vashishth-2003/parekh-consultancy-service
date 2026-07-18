@@ -1034,13 +1034,6 @@
     <div class="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
   </div>
   
-  <div class="flex justify-center mt-4 gap-4 hidden" id="blog-nav-btns">
-    <button onclick="scrollBlog(-1)" class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-primary-teal hover:bg-primary-teal hover:text-white transition-colors shadow-sm">
-      <span class="material-symbols-outlined">chevron_left</span>
-    </button>
-    <button onclick="scrollBlog(1)" class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-primary-teal hover:bg-primary-teal hover:text-white transition-colors shadow-sm">
-      <span class="material-symbols-outlined">chevron_right</span>
-    </button>
   </div>
 </div>
 </section>
@@ -2618,7 +2611,6 @@ loadGlobalReviews();
 async function loadBlogs() {
   const container = document.getElementById('blog-container');
   const noMsg = document.getElementById('no-blog-msg');
-  const navBtns = document.getElementById('blog-nav-btns');
   
   // Show loading state
   container.innerHTML = '';
@@ -2641,7 +2633,6 @@ async function loadBlogs() {
     
     // Clear loading msg
     container.innerHTML = '';
-    navBtns.classList.remove('hidden');
     
     let count = 0;
     let htmlString = '';
@@ -2677,8 +2668,8 @@ async function loadBlogs() {
 
       // Remove .reveal so the marquee isn't interrupted by intersection observers hiding them initially
       htmlString += `
-        <div class="w-[85vw] sm:w-[320px] md:w-[360px] shrink-0 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col">
-          <div class="h-44 overflow-hidden relative group">
+        <div class="w-[85vw] sm:w-[350px] md:w-[420px] shrink-0 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col">
+          <div class="h-40 overflow-hidden relative group">
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 pointer-events-none"></div>
             <img src="${img}" alt="Tax News" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
             <span class="absolute bottom-3 left-4 z-20 text-[10px] font-bold text-white bg-gold-accent px-2 py-1 rounded-sm uppercase tracking-wider">${source}</span>
@@ -2748,7 +2739,6 @@ async function loadBlogs() {
     console.error("Failed to load news:", e);
     noMsg.innerHTML = "Unable to fetch live news at the moment.";
     noMsg.classList.remove('hidden');
-    navBtns.classList.add('hidden');
   }
 }
 loadBlogs();
