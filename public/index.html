@@ -2634,58 +2634,58 @@ async function loadBlogs() {
     // Clear loading msg
     container.innerHTML = '';
     
-    let count = 0;
+    const fallbackImages = [
+      'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=600&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&auto=format&fit=crop'
+    ];
+    
+    // Extract all valid articles
+    const validArticles = articles.filter(a => a.title && a.title !== "[Removed]");
+    
+    if (validArticles.length === 0) {
+      noMsg.innerHTML = "No recent tax news found.";
+      return;
+    }
+    
+    // Only render exactly 5 DOM nodes initially for maximum memory efficiency
+    const numNodes = Math.min(5, validArticles.length);
     let htmlString = '';
-    articles.forEach((article, idx) => {
-      // Filter out removed or empty articles
-      if (article.title === "[Removed]" || !article.title) return;
-      if (count >= 5) return; // Limit to exactly top 5 news items for maximum memory efficiency
-      count++;
-      
+    
+    for(let i = 0; i < numNodes; i++) {
+      const article = validArticles[i];
       const title = article.title || "Tax Update";
       const link = article.url || "#";
       const pubDate = article.publishedAt || "";
-      
-      // Parse date
       let dateStr = "Recently";
       if (pubDate) {
         dateStr = new Date(pubDate).toLocaleDateString('en-IN', {
           day: 'numeric', month: 'short', year: 'numeric'
         });
       }
-      
-      // Extract publisher from source tag if available
       const source = article.source?.name || "Financial News";
-      
-      // Abstract image based on index, or use article image if available
-      const fallbackImages = [
-        'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=600&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&auto=format&fit=crop'
-      ];
-      const img = article.urlToImage || fallbackImages[idx % fallbackImages.length];
+      const img = article.urlToImage || fallbackImages[i % fallbackImages.length];
 
-      // Remove .reveal so the marquee isn't interrupted by intersection observers hiding them initially
       htmlString += `
-        <div class="w-[85vw] sm:w-[350px] md:w-[420px] shrink-0 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col">
+        <div class="w-[85vw] sm:w-[350px] md:w-[420px] shrink-0 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col" data-index="${i}">
           <div class="h-40 overflow-hidden relative group">
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 pointer-events-none"></div>
-            <img src="${img}" alt="Tax News" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-            <span class="absolute bottom-3 left-4 z-20 text-[10px] font-bold text-white bg-gold-accent px-2 py-1 rounded-sm uppercase tracking-wider">${source}</span>
+            <img src="${img}" alt="Tax News" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 card-img">
+            <span class="absolute bottom-3 left-4 z-20 text-[10px] font-bold text-white bg-gold-accent px-2 py-1 rounded-sm uppercase tracking-wider publisher-badge">${source}</span>
           </div>
           <div class="p-6 flex-1 flex flex-col">
-            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1">
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1 date-text">
               <span class="material-symbols-outlined text-[14px]">schedule</span> ${dateStr}
             </span>
-            <h4 class="text-lg font-headline font-bold text-dark-text mb-3 line-clamp-3 leading-snug hover:text-primary-teal transition-colors flex-1">${title}</h4>
-            <a href="${link}" target="_blank" rel="noopener noreferrer" class="text-primary-teal font-bold text-sm flex items-center gap-1 hover:text-dark-emerald transition-colors w-max mt-4">
+            <h4 class="text-lg font-headline font-bold text-dark-text mb-3 line-clamp-3 leading-snug hover:text-primary-teal transition-colors flex-1 card-title">${title}</h4>
+            <a href="${link}" target="_blank" rel="noopener noreferrer" class="text-primary-teal font-bold text-sm flex items-center gap-1 hover:text-dark-emerald transition-colors w-max mt-4 card-link">
               Read Full Story <span class="material-symbols-outlined text-sm">open_in_new</span>
             </a>
           </div>
         </div>
       `;
-    });
+    }
     
     // Do NOT duplicate the HTML string. We will recycle nodes to save memory.
     container.innerHTML = htmlString;
@@ -2719,18 +2719,60 @@ async function loadBlogs() {
     container.addEventListener('touchstart', () => isHovered = true, {passive: true});
     container.addEventListener('touchend', () => isHovered = false, {passive: true});
     
+    // Helper to dynamically update a card's content without recreating the DOM node
+    function updateCardData(card, index) {
+      if (validArticles.length === 0) return;
+      const article = validArticles[index % validArticles.length];
+      card.dataset.index = index;
+      
+      const title = article.title || "Tax Update";
+      const link = article.url || "#";
+      const pubDate = article.publishedAt || "";
+      let dateStr = "Recently";
+      if (pubDate) {
+        dateStr = new Date(pubDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+      }
+      const source = article.source?.name || "Financial News";
+      const img = article.urlToImage || fallbackImages[index % fallbackImages.length];
+      
+      card.querySelector('.card-img').src = img;
+      card.querySelector('.publisher-badge').textContent = source;
+      card.querySelector('.date-text').innerHTML = `<span class="material-symbols-outlined text-[14px]">schedule</span> ${dateStr}`;
+      card.querySelector('.card-title').textContent = title;
+      card.querySelector('.card-link').href = link;
+    }
+    
     function autoScrollLoop() {
+      if (validArticles.length <= numNodes) {
+        // If there are exactly or less than 5 articles, no need to virtualize or scroll infinitely
+        if (!isHovered && !isDragging) {
+            container.scrollLeft += scrollSpeed;
+        }
+        return requestAnimationFrame(autoScrollLoop);
+      }
+      
       const firstChild = container.firstElementChild;
       const childWidth = firstChild ? firstChild.offsetWidth + 24 : 0; // Card width + 24px gap
       
-      // Node Recycling: Move the first card to the back when it fully scrolls out of view
+      // Virtualization: Move the first card to the back, and UPDATE its content to the NEXT article
       if (childWidth > 0 && container.scrollLeft >= childWidth) {
+        const lastChild = container.lastElementChild;
+        const lastIndex = parseInt(lastChild.dataset.index);
+        const newIndex = (lastIndex + 1) % validArticles.length;
+        
+        updateCardData(firstChild, newIndex);
+        
         container.appendChild(firstChild); // Moves node to end
         container.scrollLeft -= childWidth; // Counteract the jump instantly
       } 
-      // Node Recycling: If dragging backwards past the first card
+      // Virtualization: If dragging backwards, move last card to front and UPDATE its content to the PREV article
       else if (childWidth > 0 && container.scrollLeft <= 0 && isDragging) {
         const lastChild = container.lastElementChild;
+        const firstIndex = parseInt(firstChild.dataset.index);
+        const newIndex = (firstIndex - 1 + validArticles.length) % validArticles.length;
+        
+        updateCardData(lastChild, newIndex);
+        
         container.prepend(lastChild);
         container.scrollLeft += (lastChild.offsetWidth + 24);
       }
