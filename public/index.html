@@ -257,6 +257,15 @@
     transform: translate3d(0, 0, 0);
     will-change: transform, opacity;
   }
+  
+  /* Hide elements initially to prevent glitch before AnimeJS starts */
+  #navbar, 
+  #hero .order-2, 
+  #hero [style*="float"], 
+  .decorative-circle {
+    opacity: 0;
+    will-change: transform, opacity;
+  }
 
   /* Typing cursor */
   .typing-cursor {
