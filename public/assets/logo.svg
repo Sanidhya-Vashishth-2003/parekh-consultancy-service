@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="100%" height="100%">
+  <defs>
+    <!-- Premium Gradient -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e8d082" />
+      <stop offset="50%" stop-color="#c8a84e" />
+      <stop offset="100%" stop-color="#8c7335" />
+    </linearGradient>
+    <linearGradient id="tealGrad" x1="100%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#0a4f4f" />
+      <stop offset="50%" stop-color="#0d6e6e" />
+      <stop offset="100%" stop-color="#14a3a3" />
+    </linearGradient>
+    <!-- Soft Glow -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    
+    <style>
+      .draw-anim {
+        stroke-dasharray: 400;
+        stroke-dashoffset: 400;
+        animation: drawPath 2.5s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+      }
+      .draw-anim-delayed {
+        stroke-dasharray: 400;
+        stroke-dashoffset: 400;
+        animation: drawPath 2.5s cubic-bezier(0.8, 0, 0.2, 1) 0.5s forwards;
+      }
+      .fade-in {
+        opacity: 0;
+        animation: fadeInGlow 2s ease-out 2s forwards;
+      }
+      .pulse-slow {
+        animation: pulseLogo 4s ease-in-out 3s infinite alternate;
+        transform-origin: center;
+      }
+      @keyframes drawPath {
+        to { stroke-dashoffset: 0; }
+      }
+      @keyframes fadeInGlow {
+        from { opacity: 0; filter: drop-shadow(0 0 0 rgba(200,168,78,0)); }
+        to { opacity: 1; filter: drop-shadow(0 0 8px rgba(200,168,78,0.4)); }
+      }
+      @keyframes pulseLogo {
+        from { transform: scale(1); }
+        to { transform: scale(1.03); }
+      }
+    </style>
+  </defs>
+
+  <!-- Animated Outer Shield/Hexagon -->
+  <g class="pulse-slow">
+    <path class="draw-anim" 
+          d="M60 5 L105 30 L105 85 L60 115 L15 85 L15 30 Z" 
+          fill="none" 
+          stroke="url(#tealGrad)" 
+          stroke-width="3" 
+          stroke-linejoin="round" />
+          
+    <path class="draw-anim-delayed" 
+          d="M60 12 L97 33 L97 82 L60 108 L23 82 L23 33 Z" 
+          fill="none" 
+          stroke="url(#goldGrad)" 
+          stroke-width="1.5" 
+          stroke-linejoin="round" 
+          opacity="0.6"/>
+
+    <!-- P S Monogram inside -->
+    <g class="fade-in" transform="translate(0, 4)">
+      <!-- Letter P -->
+      <path d="M 42 75 L 42 35 C 42 35, 62 30, 62 48 C 62 60, 42 62, 42 62" 
+            fill="none" stroke="url(#goldGrad)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+      
+      <!-- Letter S -->
+      <path d="M 72 38 C 72 38, 52 32, 52 48 C 52 64, 78 56, 78 72 C 78 88, 52 82, 52 82" 
+            fill="none" stroke="url(#tealGrad)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+  </g>
+</svg>
