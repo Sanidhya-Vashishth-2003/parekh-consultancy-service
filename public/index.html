@@ -210,21 +210,7 @@
     90% { opacity: 0.2; }
     100% { transform: translate3d(0, -10vh, 0); opacity: 0; }
   }
-  @keyframes marqueeSlide {
-    0% { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(-50%, 0, 0); }
-  }
-  .marquee-track {
-    display: flex;
-    width: max-content;
-    animation: marqueeSlide 30s linear infinite;
-    will-change: transform;
-  }
-  .marquee-container:hover .marquee-track,
-  .marquee-container:active .marquee-track {
-    animation-play-state: paused;
-  }
-
+  /* Removed legacy CSS marquee to support manual scrolling */
   /* ===== SCROLL REVEAL (anime.js powered — GPU composited) ===== */
   .reveal {
     opacity: 0;
@@ -1032,11 +1018,11 @@
     <div class="w-20 h-1 bg-gradient-to-r from-primary-teal to-gold-accent mx-auto mt-4 rounded-full"></div>
   </div>
   
-  <div class="relative w-full overflow-hidden marquee-container">
+  <div class="relative w-full overflow-hidden">
     <!-- Left Gradient Fade -->
     <div class="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
     
-    <div class="marquee-track gap-6 pb-8 pt-4 hide-scroll" id="blog-container">
+    <div class="flex overflow-x-auto gap-6 pb-8 pt-4 hide-scroll cursor-grab active:cursor-grabbing" id="blog-container" style="-ms-overflow-style: none; scrollbar-width: none;">
       <!-- Blogs will be injected here via JS -->
       <div class="w-full text-center py-10 text-gray-500 hidden" id="no-blog-msg">
         <span class="material-symbols-outlined text-4xl mb-2 animate-spin text-primary-teal">refresh</span>
@@ -2710,8 +2696,53 @@ async function loadBlogs() {
       `;
     });
     
-    // Duplicate the HTML string exactly once to create a seamless infinite loop in the marquee
+    // Duplicate the HTML string exactly once to create a seamless infinite loop
     container.innerHTML = htmlString + htmlString;
+    
+    // Constant Auto-scroll logic with manual scroll support
+    let isHovered = false;
+    let scrollSpeed = 0.5; // Pixels per frame (smooth slow speed)
+    let isDragging = false;
+    let startX, scrollLeftPos;
+
+    // Mouse Drag to scroll (for desktop)
+    container.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startX = e.pageX - container.offsetLeft;
+      scrollLeftPos = container.scrollLeft;
+    });
+    container.addEventListener('mouseup', () => isDragging = false);
+    container.addEventListener('mouseleave', () => {
+      isDragging = false;
+      isHovered = false;
+    });
+    container.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      e.preventDefault();
+      const x = e.pageX - container.offsetLeft;
+      const walk = (x - startX) * 2; // Scroll speed multiplier
+      container.scrollLeft = scrollLeftPos - walk;
+    });
+    
+    container.addEventListener('mouseenter', () => isHovered = true);
+    container.addEventListener('touchstart', () => isHovered = true, {passive: true});
+    container.addEventListener('touchend', () => isHovered = false, {passive: true});
+    
+    function autoScrollLoop() {
+      // Loop bounds perfectly for 2x duplicated content
+      if (container.scrollLeft >= container.scrollWidth / 2) {
+        container.scrollLeft -= container.scrollWidth / 2;
+      } else if (container.scrollLeft <= 0 && isDragging) {
+        container.scrollLeft += container.scrollWidth / 2;
+      }
+      
+      if (!isHovered && !isDragging) {
+        container.scrollLeft += scrollSpeed;
+      }
+      requestAnimationFrame(autoScrollLoop);
+    }
+    
+    requestAnimationFrame(autoScrollLoop);
     
   } catch(e) {
     console.error("Failed to load news:", e);
