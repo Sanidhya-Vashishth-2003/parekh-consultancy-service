@@ -2639,7 +2639,7 @@ async function loadBlogs() {
     articles.forEach((article, idx) => {
       // Filter out removed or empty articles
       if (article.title === "[Removed]" || !article.title) return;
-      if (count >= 8) return; // Limit to top 8 news items
+      if (count >= 5) return; // Limit to exactly top 5 news items for maximum memory efficiency
       count++;
       
       const title = article.title || "Tax Update";
@@ -2687,10 +2687,10 @@ async function loadBlogs() {
       `;
     });
     
-    // Duplicate the HTML string exactly once to create a seamless infinite loop
-    container.innerHTML = htmlString + htmlString;
+    // Do NOT duplicate the HTML string. We will recycle nodes to save memory.
+    container.innerHTML = htmlString;
     
-    // Constant Auto-scroll logic with manual scroll support
+    // Constant Auto-scroll logic with manual scroll support and DOM node recycling
     let isHovered = false;
     let scrollSpeed = 0.5; // Pixels per frame (smooth slow speed)
     let isDragging = false;
@@ -2720,11 +2720,19 @@ async function loadBlogs() {
     container.addEventListener('touchend', () => isHovered = false, {passive: true});
     
     function autoScrollLoop() {
-      // Loop bounds perfectly for 2x duplicated content
-      if (container.scrollLeft >= container.scrollWidth / 2) {
-        container.scrollLeft -= container.scrollWidth / 2;
-      } else if (container.scrollLeft <= 0 && isDragging) {
-        container.scrollLeft += container.scrollWidth / 2;
+      const firstChild = container.firstElementChild;
+      const childWidth = firstChild ? firstChild.offsetWidth + 24 : 0; // Card width + 24px gap
+      
+      // Node Recycling: Move the first card to the back when it fully scrolls out of view
+      if (childWidth > 0 && container.scrollLeft >= childWidth) {
+        container.appendChild(firstChild); // Moves node to end
+        container.scrollLeft -= childWidth; // Counteract the jump instantly
+      } 
+      // Node Recycling: If dragging backwards past the first card
+      else if (childWidth > 0 && container.scrollLeft <= 0 && isDragging) {
+        const lastChild = container.lastElementChild;
+        container.prepend(lastChild);
+        container.scrollLeft += (lastChild.offsetWidth + 24);
       }
       
       if (!isHovered && !isDragging) {
