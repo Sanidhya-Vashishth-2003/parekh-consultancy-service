@@ -1,0 +1,2260 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Parekh Consultancy Service | Pankaj Sharma - Tax Consultant & Financial Advisor</title>
+<meta name="description" content="Parekh Consultancy Service by Pankaj Sharma — Expert Tax Consultation, GST Registration, Income Tax Returns, Computerized Accounting & Financial Advisory Services in India."/>
+<meta name="keywords" content="tax consultant, financial advisor, GST registration, income tax returns, Pankaj Sharma, Parekh Consultancy"/>
+<!-- Fonts (preconnect + font-display:swap for fast LCP) -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Anime.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+<!-- Tailwind Config -->
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary-teal": "#0d6e6e",
+          "dark-emerald": "#0a4f4f",
+          "gold-accent": "#c8a84e",
+          "light-gray": "#f5f7fa",
+          "dark-text": "#1a1a2e"
+        },
+        borderRadius: {
+          DEFAULT: "0.25rem",
+          lg: "0.5rem",
+          xl: "0.75rem",
+          "2xl": "1rem",
+          full: "9999px"
+        },
+        fontFamily: {
+          headline: ["Playfair Display", "serif"],
+          display: ["Playfair Display", "serif"],
+          body: ["Inter", "sans-serif"],
+          label: ["Inter", "sans-serif"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== PRELOADER ===== */
+  #preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: linear-gradient(135deg, #0a4f4f 0%, #0d6e6e 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+  }
+  #preloader.loaded {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .preloader-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 800;
+    color: #c8a84e;
+    animation: pulse-logo 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse-logo {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+  }
+
+  /* ===== CINEMATIC INTRO OVERLAY ===== */
+  #intro-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    pointer-events: all;
+    overflow: hidden;
+    contain: strict;
+  }
+  .intro-panel {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: #0b5e5e;
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+  .intro-panel-left {
+    left: 0;
+    transform-origin: left center;
+  }
+  .intro-panel-right {
+    right: 0;
+    transform-origin: right center;
+  }
+  .intro-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateZ(0);
+    text-align: center;
+    z-index: 10001;
+    width: 100%;
+    padding: 0 2rem;
+  }
+  .intro-logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    font-weight: 800;
+    color: #c8a84e;
+    opacity: 0;
+    letter-spacing: 0.15em;
+    will-change: transform, opacity;
+    transform: translateZ(0);
+  }
+  .intro-tagline {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.7);
+    opacity: 0;
+    margin-top: 1rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    will-change: transform, opacity;
+  }
+  .intro-line {
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #c8a84e, transparent);
+    margin: 1.5rem auto 0;
+    will-change: width, opacity;
+  }
+  .intro-particles {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    contain: strict;
+  }
+  .intro-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(200, 168, 78, 0.4);
+    will-change: transform, opacity;
+    transform: translateZ(0);
+  }
+  /* Hide scrollbar during intro */
+  body.intro-active {
+    overflow: hidden;
+  }
+
+  /* ===== PERFORMANCE GLOBALS ===== */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  section {
+    contain: layout style;
+  }
+  .anime-reveal {
+    opacity: 0;
+    will-change: transform, opacity;
+    transform: translateZ(0);
+  }
+
+  /* ===== ANIMATIONS (GPU-only: transform + opacity) ===== */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translate3d(0, 40px, 0); }
+    to { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(0, -12px, 0); }
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  @keyframes particleFloat {
+    0% { transform: translate3d(0, 100vh, 0); opacity: 0; }
+    10% { opacity: 0.4; }
+    90% { opacity: 0.2; }
+    100% { transform: translate3d(0, -10vh, 0); opacity: 0; }
+  }
+
+  /* ===== SCROLL REVEAL (anime.js powered — GPU composited) ===== */
+  .reveal {
+    opacity: 0;
+    transform: translate3d(0, 50px, 0);
+    will-change: transform, opacity;
+  }
+  .reveal-left {
+    opacity: 0;
+    transform: translate3d(-60px, 0, 0);
+    will-change: transform, opacity;
+  }
+  .reveal-right {
+    opacity: 0;
+    transform: translate3d(60px, 0, 0);
+    will-change: transform, opacity;
+  }
+  .reveal-scale {
+    opacity: 0;
+    transform: scale3d(0.85, 0.85, 1);
+    will-change: transform, opacity;
+  }
+  /* Remove will-change after animation to free GPU memory */
+  .reveal.active, .reveal-left.active, .reveal-right.active, .reveal-scale.active {
+    will-change: auto;
+  }
+
+  /* ===== HERO ===== */
+  .hero-bg-gradient {
+    background: linear-gradient(135deg, #ffffff 0%, #f0fafa 50%, #e8f5f5 100%);
+  }
+  .decorative-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(13, 110, 110, 0.05);
+    z-index: 0;
+  }
+  .hero-text-animate {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+    will-change: transform, opacity;
+  }
+
+  /* Typing cursor */
+  .typing-cursor {
+    display: inline-block;
+    width: 3px;
+    height: 1.2em;
+    background: #0d6e6e;
+    margin-left: 4px;
+    animation: blink 0.8s ease-in-out infinite;
+    vertical-align: text-bottom;
+  }
+
+  /* ===== FLOATING PARTICLES (GPU composited, reduced count) ===== */
+  .particle {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(13, 110, 110, 0.12);
+    pointer-events: none;
+    z-index: 0;
+    animation: particleFloat linear infinite;
+    transform: translateZ(0);
+    will-change: transform;
+    contain: strict;
+  }
+
+  /* ===== GLASS CARD (no backdrop-filter for 90fps — use solid bg instead) ===== */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  /* ===== SERVICE CARD (GPU-only transitions) ===== */
+  .service-card {
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s ease;
+    position: relative;
+    overflow: hidden;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #0d6e6e, #c8a84e);
+    transform: scaleX(0) translateZ(0);
+    transition: transform 0.35s ease;
+    transform-origin: left;
+  }
+  .service-card:hover::before {
+    transform: scaleX(1) translateZ(0);
+  }
+  .service-card:hover {
+    transform: translate3d(0, -8px, 0);
+    box-shadow: 0 20px 40px rgba(13, 110, 110, 0.15);
+  }
+
+  /* ===== STAT COUNTER ===== */
+  .stat-card {
+    position: relative;
+  }
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: #c8a84e;
+    transition: width 0.6s ease;
+  }
+  .stat-card:hover::after {
+    width: 60px;
+  }
+
+  /* ===== WHY CHOOSE US CARDS (GPU-only) ===== */
+  .feature-card {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+  .feature-card:hover {
+    transform: translate3d(0, -6px, 0);
+  }
+
+  /* ===== BACK TO TOP ===== */
+  #back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 50;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #0d6e6e;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+    transition: background 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 110, 0.3);
+    will-change: transform, opacity;
+  }
+  #back-to-top.visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  #back-to-top:hover {
+    background: #0a4f4f;
+  }
+
+  /* ===== FORM ANIMATIONS (GPU-only) ===== */
+  .form-input {
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    transform: translateZ(0);
+  }
+  .form-input:focus {
+    transform: translate3d(0, -2px, 0);
+    box-shadow: 0 4px 12px rgba(13, 110, 110, 0.15);
+  }
+
+  /* ===== NAVBAR SCROLL ===== */
+  .navbar-scrolled {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1) !important;
+  }
+
+  /* ===== SMOOTH SCROLL ===== */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* ===== WHATSAPP FLOAT (GPU composited) ===== */
+  .whatsapp-float {
+    position: fixed;
+    bottom: 5rem;
+    right: 2rem;
+    z-index: 50;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #25D366;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+    transition: transform 0.3s ease;
+    animation: float 4s ease-in-out infinite;
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  .whatsapp-float:hover {
+    transform: scale(1.1) translateZ(0);
+  }
+</style>
+</head>
+<body class="font-body text-dark-text antialiased bg-white selection:bg-primary-teal selection:text-white">
+
+<!-- ===== CINEMATIC INTRO OVERLAY ===== -->
+<div id="intro-overlay">
+  <div class="intro-panel intro-panel-left"></div>
+  <div class="intro-panel intro-panel-right"></div>
+  <div class="intro-particles" id="intro-particles"></div>
+  <div class="intro-content">
+    <div class="intro-logo-text" id="intro-logo">PS</div>
+    <div class="intro-line" id="intro-line"></div>
+    <div class="intro-tagline" id="intro-tagline">Parekh Consultancy Service</div>
+  </div>
+</div>
+
+<!-- ===== PRELOADER (hidden - replaced by intro) ===== -->
+<div id="preloader" style="display:none;">
+  <div class="preloader-logo">PS</div>
+</div>
+
+<!-- ===== FLOATING PARTICLES ===== -->
+<div id="particles-container" class="fixed inset-0 pointer-events-none z-0"></div>
+
+<!-- ===== NAVBAR ===== -->
+<header class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm border-b border-light-gray/20 transition-all duration-500" id="navbar">
+<div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto transition-all duration-500">
+  <!-- Logo -->
+  <a class="flex items-center gap-3 hover:opacity-80 transition-all duration-300" href="#hero">
+    <div class="w-10 h-10 bg-primary-teal rounded-lg flex items-center justify-center">
+      <span class="font-headline text-xl font-bold text-white">PS</span>
+    </div>
+    <span class="font-headline text-xl font-bold text-primary-teal hidden md:block">Parekh Consultancy</span>
+  </a>
+  <!-- Desktop Nav -->
+  <nav class="hidden lg:flex items-center gap-8">
+    <a class="font-body text-sm uppercase tracking-wider text-primary-teal font-bold border-b-2 border-gold-accent pb-1 transition-all duration-300 nav-link" href="#hero" data-section="hero">Home</a>
+    <a class="font-body text-sm uppercase tracking-wider text-dark-text hover:text-primary-teal transition-all duration-300 nav-link" href="#about" data-section="about">About</a>
+    <a class="font-body text-sm uppercase tracking-wider text-dark-text hover:text-primary-teal transition-all duration-300 nav-link" href="#services" data-section="services">Services</a>
+    <a class="font-body text-sm uppercase tracking-wider text-dark-text hover:text-primary-teal transition-all duration-300 nav-link" href="#why-us" data-section="why-us">Why Choose Us</a>
+    <a class="font-body text-sm uppercase tracking-wider text-dark-text hover:text-primary-teal transition-all duration-300 nav-link" href="#testimonials" data-section="testimonials">Testimonials</a>
+    <a class="font-body text-sm uppercase tracking-wider text-dark-text hover:text-primary-teal transition-all duration-300 nav-link" href="#contact" data-section="contact">Contact</a>
+  </nav>
+  <!-- CTA Button & Auth -->
+  <div class="hidden lg:flex items-center gap-6">
+    <!-- Unauthenticated State -->
+    <button id="nav-login-btn" onclick="openAuthModal()" class="text-primary-teal font-medium hover:text-dark-emerald transition-colors">Login / Sign Up</button>
+    
+    <a class="bg-primary-teal text-white px-6 py-2.5 rounded-lg hover:bg-dark-emerald transition-all duration-300 font-body text-sm font-medium shadow-md shadow-primary-teal/20 hover:shadow-lg hover:shadow-primary-teal/30 active:scale-95" href="#contact">
+      Get Consultation
+    </a>
+
+    <!-- Authenticated State (Hidden initially) -->
+    <button id="nav-profile-btn" onclick="openProfileModal()" class="hidden items-center gap-2 group">
+      <img id="nav-user-dp" src="https://ui-avatars.com/api/?name=User&background=0d6e6e&color=fff" class="w-10 h-10 rounded-full border-2 border-primary-teal object-cover shadow-sm" alt="Profile">
+      <span id="nav-user-name" class="font-medium text-dark-text group-hover:text-primary-teal transition-colors text-sm">User</span>
+    </button>
+  </div>
+  <!-- Mobile Toggle -->
+  <button class="lg:hidden text-primary-teal p-2" id="mobile-menu-btn">
+    <span class="material-symbols-outlined text-3xl">menu</span>
+  </button>
+</div>
+</header>
+
+<!-- ===== MOBILE NAV ===== -->
+<div class="fixed inset-0 bg-white z-40 hidden flex-col pt-24 px-6 pb-6 shadow-xl" id="mobile-nav">
+<nav class="flex flex-col gap-6 text-center">
+  <a class="font-headline text-xl text-primary-teal font-bold" href="#hero">Home</a>
+  <a class="font-headline text-xl text-dark-text hover:text-primary-teal transition-colors" href="#about">About</a>
+  <a class="font-headline text-xl text-dark-text hover:text-primary-teal transition-colors" href="#services">Services</a>
+  <a class="font-headline text-xl text-dark-text hover:text-primary-teal transition-colors" href="#why-us">Why Choose Us</a>
+  <a class="font-headline text-xl text-dark-text hover:text-primary-teal transition-colors" href="#testimonials">Testimonials</a>
+  <a class="font-headline text-xl text-dark-text hover:text-primary-teal transition-colors" href="#contact">Contact</a>
+  <a class="mt-4 bg-primary-teal text-white py-3 rounded-lg w-full font-medium hover:bg-dark-emerald transition-colors" href="#contact">Get Consultation</a>
+  <button id="mobile-login-btn" onclick="openAuthModal(); document.getElementById('mobile-menu-btn').click();" class="font-headline text-xl text-primary-teal font-bold border border-primary-teal py-2 rounded-lg mt-2">Login / Sign Up</button>
+  <button id="mobile-profile-btn" onclick="openProfileModal(); document.getElementById('mobile-menu-btn').click();" class="hidden items-center justify-center gap-3 mt-2 bg-light-gray py-3 rounded-lg border border-gray-200">
+      <img id="mobile-user-dp" src="https://ui-avatars.com/api/?name=User&background=0d6e6e&color=fff" class="w-8 h-8 rounded-full border-2 border-primary-teal object-cover" alt="Profile">
+      <span id="mobile-user-name" class="font-headline text-lg text-dark-text">User</span>
+  </button>
+</nav>
+</div>
+
+<!-- ===== HERO SECTION ===== -->
+<section class="pt-24 min-h-screen hero-bg-gradient relative overflow-hidden flex items-center" id="hero">
+<!-- Decorative Background -->
+<div class="decorative-circle w-96 h-96 -top-20 -left-20" style="animation: float 8s ease-in-out infinite;"></div>
+<div class="decorative-circle w-64 h-64 bottom-10 right-20" style="animation: float 10s ease-in-out infinite 2s;"></div>
+<div class="absolute top-1/4 right-1/3 w-4 h-4 rounded-full bg-primary-teal/20" style="animation: float 6s ease-in-out infinite 1s;"></div>
+<div class="absolute bottom-1/3 left-1/4 w-6 h-6 rounded-full bg-gold-accent/20" style="animation: float 7s ease-in-out infinite 3s;"></div>
+<div class="absolute top-1/2 right-1/4 w-3 h-3 rounded-full bg-primary-teal/10" style="animation: float 9s ease-in-out infinite 4s;"></div>
+
+<div class="max-w-7xl mx-auto px-6 md:px-8 py-12 md:py-20 relative z-10 w-full">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+    <!-- Left Content -->
+    <div class="order-2 lg:order-1 flex flex-col items-start space-y-6 max-w-2xl">
+      <span class="hero-text-animate text-primary-teal font-bold tracking-wider uppercase text-sm flex items-center gap-2">
+        <span class="w-8 h-[2px] bg-primary-teal inline-block"></span>
+        Welcome to
+      </span>
+      <h1 class="hero-text-animate font-headline text-4xl md:text-5xl lg:text-6xl font-extrabold text-dark-text leading-tight">
+        Parekh Consultancy Service
+      </h1>
+      <div class="hero-text-animate">
+        <h2 class="font-display text-xl md:text-2xl text-dark-emerald font-medium flex items-center">
+          <span id="typed-text"></span><span class="typing-cursor"></span>
+        </h2>
+      </div>
+      <p class="hero-text-animate font-body text-base md:text-lg text-gray-600 leading-relaxed">
+        Expert tax consultation and financial advisory services by <strong class="text-dark-text">Pankaj Sharma</strong>. Trusted by hundreds of businesses across India to deliver strategic growth, compliance clarity, and long-term financial security.
+      </p>
+      <div class="hero-text-animate flex flex-col sm:flex-row gap-4 pt-4 w-full sm:w-auto">
+        <a class="bg-primary-teal text-white px-8 py-3.5 rounded-lg font-medium text-center hover:bg-dark-emerald transition-all duration-300 shadow-lg shadow-primary-teal/20 flex items-center justify-center gap-2 group hover:shadow-xl hover:shadow-primary-teal/30" href="#contact">
+          Book Free Consultation
+          <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+        </a>
+        <a class="border-2 border-primary-teal text-primary-teal px-8 py-3.5 rounded-lg font-medium text-center hover:bg-primary-teal hover:text-white transition-all duration-300 flex items-center justify-center" href="#services">
+          Our Services
+        </a>
+      </div>
+      <!-- Trust indicators -->
+      <div class="hero-text-animate pt-8 flex items-center gap-6 border-t border-gray-200 mt-8 w-full">
+        <div class="flex flex-col">
+          <span class="font-headline font-bold text-2xl text-dark-text">15+</span>
+          <span class="text-sm text-gray-500 uppercase tracking-wider">Years Exp</span>
+        </div>
+        <div class="w-px h-10 bg-gray-200"></div>
+        <div class="flex flex-col">
+          <span class="font-headline font-bold text-2xl text-dark-text">500+</span>
+          <span class="text-sm text-gray-500 uppercase tracking-wider">Clients</span>
+        </div>
+        <div class="w-px h-10 bg-gray-200"></div>
+        <div class="flex flex-col">
+          <span class="font-headline font-bold text-2xl text-dark-text">1000+</span>
+          <span class="text-sm text-gray-500 uppercase tracking-wider">Projects</span>
+        </div>
+      </div>
+    </div>
+    <!-- Right Content: Image -->
+    <div class="order-1 lg:order-2 relative lg:ml-auto w-full max-w-lg mx-auto lg:max-w-none" style="animation: fadeInRight 1s ease-out 0.5s both;">
+      <div class="relative">
+        <div class="absolute inset-0 bg-gold-accent/20 rounded-2xl transform translate-x-4 translate-y-4 -z-10"></div>
+        <div class="rounded-2xl shadow-2xl relative z-10 bg-white border border-gray-100">
+          <div class="overflow-hidden rounded-2xl">
+            <img alt="Pankaj Sharma - Tax Consultant & Financial Advisor" class="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700" src="assets/pankaj-sharma.jpg"/>
+          </div>
+          <!-- Floating Badge -->
+          <div class="absolute bottom-6 -left-6 md:-left-8 bg-white p-4 rounded-xl shadow-xl border border-gray-100 flex items-center gap-4" style="animation: float 3s ease-in-out infinite;">
+            <div class="bg-primary-teal/10 p-3 rounded-full text-primary-teal">
+              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified</span>
+            </div>
+            <div>
+              <p class="font-bold text-dark-text">Certified Advisor</p>
+              <p class="text-xs text-gray-500">Tax & Finance</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== ABOUT SECTION ===== -->
+<section class="py-24 bg-white" id="about">
+<div class="max-w-7xl mx-auto px-8">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <!-- Left: Image -->
+    <div class="reveal-left relative">
+      <div class="absolute inset-0 bg-primary-teal/10 rounded-2xl transform -translate-x-4 -translate-y-4 -z-10"></div>
+      <div class="rounded-2xl overflow-hidden shadow-xl">
+        <img alt="Parekh Consultancy Office" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-700" src="assets/office.jpg"/>
+      </div>
+    </div>
+    <!-- Right: Text -->
+    <div class="reveal-right">
+      <span class="text-primary-teal font-bold tracking-wider uppercase text-sm mb-4 block flex items-center gap-2">
+        <span class="w-8 h-[2px] bg-primary-teal inline-block"></span>About Us
+      </span>
+      <h2 class="font-headline text-3xl md:text-4xl font-bold text-dark-text mb-6">About Pankaj Sharma</h2>
+      <p class="text-gray-600 leading-relaxed mb-8">
+        With over 15 years of experience in taxation and financial advisory, Pankaj Sharma founded Parekh Consultancy Service with a vision to provide reliable, expert financial guidance to businesses and individuals across India. Our team of dedicated professionals ensures every client receives personalized attention and strategic financial solutions.
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 bg-primary-teal/10 rounded-full flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-primary-teal text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
+          <span class="font-medium text-dark-text">15+ Years Experience</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 bg-primary-teal/10 rounded-full flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-primary-teal text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
+          <span class="font-medium text-dark-text">Certified Tax Consultant</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 bg-primary-teal/10 rounded-full flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-primary-teal text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
+          <span class="font-medium text-dark-text">500+ Happy Clients</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 bg-primary-teal/10 rounded-full flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-primary-teal text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
+          <span class="font-medium text-dark-text">Trusted Financial Advisor</span>
+        </div>
+      </div>
+      <a class="inline-flex items-center gap-2 px-8 py-4 bg-dark-emerald text-white rounded-lg font-semibold hover:bg-primary-teal transition-all duration-300 shadow-lg hover:shadow-primary-teal/20 group" href="#contact">
+        Learn More About Our Journey
+        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== SERVICES SECTION ===== -->
+<section class="py-24 bg-light-gray" id="services">
+<div class="max-w-7xl mx-auto px-6 md:px-8">
+  <div class="text-center mb-16 reveal">
+    <span class="text-primary-teal font-bold tracking-wider uppercase text-sm">What We Offer</span>
+    <h2 class="font-headline text-3xl md:text-4xl font-bold text-dark-text mt-2">Our Services</h2>
+    <div class="w-20 h-1 bg-gradient-to-r from-primary-teal to-gold-accent mx-auto mt-4 rounded-full"></div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children">
+    <!-- GST Registration -->
+    <div class="service-card bg-white p-8 rounded-xl shadow-sm border-l-4 border-primary-teal flex flex-col h-full reveal">
+      <div class="w-14 h-14 bg-primary-teal/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary-teal transition-colors">
+        <span class="material-symbols-outlined text-primary-teal text-3xl">description</span>
+      </div>
+      <h3 class="font-headline font-bold text-xl text-dark-text mb-3">GST Registration</h3>
+      <p class="text-gray-600 mb-6 flex-grow leading-relaxed">Complete GST registration assistance for new and existing businesses. Hassle-free process with expert guidance.</p>
+      <a class="text-primary-teal font-medium flex items-center gap-1 hover:gap-3 transition-all duration-300" href="#contact">
+        Learn More <span class="material-symbols-outlined text-sm">arrow_forward</span>
+      </a>
+    </div>
+    <!-- GST Compliance -->
+    <div class="service-card bg-white p-8 rounded-xl shadow-sm border-l-4 border-primary-teal flex flex-col h-full reveal">
+      <div class="w-14 h-14 bg-primary-teal/10 rounded-xl flex items-center justify-center mb-6">
+        <span class="material-symbols-outlined text-primary-teal text-3xl">assignment</span>
+      </div>
+      <h3 class="font-headline font-bold text-xl text-dark-text mb-3">GST Compliance & Returns</h3>
+      <p class="text-gray-600 mb-6 flex-grow leading-relaxed">Timely filing of GSTR-1, GSTR-3B, and annual returns. Stay compliant with all GST regulations.</p>
+      <a class="text-primary-teal font-medium flex items-center gap-1 hover:gap-3 transition-all duration-300" href="#contact">
+        Learn More <span class="material-symbols-outlined text-sm">arrow_forward</span>
+      </a>
+    </div>
+    <!-- Income Tax -->
+    <div class="service-card bg-white p-8 rounded-xl shadow-sm border-l-4 border-primary-teal flex flex-col h-full reveal">
+      <div class="w-14 h-14 bg-primary-teal/10 rounded-xl flex items-center justify-center mb-6">
+        <span class="material-symbols-outlined text-primary-teal text-3xl">calculate</span>
+      </div>
+      <h3 class="font-headline font-bold text-xl text-dark-text mb-3">Income Tax Returns</h3>
+      <p class="text-gray-600 mb-6 flex-grow leading-relaxed">Professional ITR filing for individuals, businesses, and HUFs. Maximize deductions and minimize tax liability.</p>
+      <a class="text-primary-teal font-medium flex items-center gap-1 hover:gap-3 transition-all duration-300" href="#contact">
+        Learn More <span class="material-symbols-outlined text-sm">arrow_forward</span>
+      </a>
+    </div>
+    <!-- Computerized Accounting -->
+    <div class="service-card bg-white p-8 rounded-xl shadow-sm border-l-4 border-primary-teal flex flex-col h-full reveal">
+      <div class="w-14 h-14 bg-primary-teal/10 rounded-xl flex items-center justify-center mb-6">
+        <span class="material-symbols-outlined text-primary-teal text-3xl">computer</span>
+      </div>
+      <h3 class="font-headline font-bold text-xl text-dark-text mb-3">Computerized Accounting</h3>
+      <p class="text-gray-600 mb-6 flex-grow leading-relaxed">Modern computerized bookkeeping and accounting solutions using Tally and other leading software.</p>
+      <a class="text-primary-teal font-medium flex items-center gap-1 hover:gap-3 transition-all duration-300" href="#contact">
+        Learn More <span class="material-symbols-outlined text-sm">arrow_forward</span>
+      </a>
+    </div>
+    <!-- Tender Works -->
+    <div class="service-card bg-white p-8 rounded-xl shadow-sm border-l-4 border-primary-teal flex flex-col h-full reveal">
+      <div class="w-14 h-14 bg-primary-teal/10 rounded-xl flex items-center justify-center mb-6">
+        <span class="material-symbols-outlined text-primary-teal text-3xl">folder</span>
+      </div>
+      <h3 class="font-headline font-bold text-xl text-dark-text mb-3">Tender Related Paper Works</h3>
+      <p class="text-gray-600 mb-6 flex-grow leading-relaxed">Complete documentation and paperwork assistance for government and private tender applications.</p>
+      <a class="text-primary-teal font-medium flex items-center gap-1 hover:gap-3 transition-all duration-300" href="#contact">
+        Learn More <span class="material-symbols-outlined text-sm">arrow_forward</span>
+      </a>
+    </div>
+    <!-- Bank Reports -->
+    <div class="service-card bg-white p-8 rounded-xl shadow-sm border-l-4 border-primary-teal flex flex-col h-full reveal">
+      <div class="w-14 h-14 bg-primary-teal/10 rounded-xl flex items-center justify-center mb-6">
+        <span class="material-symbols-outlined text-primary-teal text-3xl">account_balance</span>
+      </div>
+      <h3 class="font-headline font-bold text-xl text-dark-text mb-3">Bank Project Reports</h3>
+      <p class="text-gray-600 mb-6 flex-grow leading-relaxed">Detailed project reports for bank loans, MUDRA loans, and other financial institution requirements.</p>
+      <a class="text-primary-teal font-medium flex items-center gap-1 hover:gap-3 transition-all duration-300" href="#contact">
+        Learn More <span class="material-symbols-outlined text-sm">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== STATS SECTION ===== -->
+<section class="py-20 bg-dark-emerald relative overflow-hidden" id="stats">
+<div class="absolute inset-0 opacity-5 pointer-events-none">
+  <svg height="100%" preserveAspectRatio="none" viewBox="0 0 100 100" width="100%">
+    <path d="M0 100 C 20 0 50 0 100 100" fill="transparent" stroke="white"></path>
+  </svg>
+</div>
+<div class="max-w-7xl mx-auto px-8 relative z-10">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+    <div class="stat-card reveal">
+      <h3 class="stat-number text-5xl md:text-6xl font-bold text-white mb-2" data-target="15">0</h3>
+      <p class="text-gold-accent font-medium uppercase tracking-widest text-sm">Years Experience</p>
+    </div>
+    <div class="stat-card reveal">
+      <h3 class="stat-number text-5xl md:text-6xl font-bold text-white mb-2" data-target="500">0</h3>
+      <p class="text-gold-accent font-medium uppercase tracking-widest text-sm">Happy Clients</p>
+    </div>
+    <div class="stat-card reveal">
+      <h3 class="stat-number text-5xl md:text-6xl font-bold text-white mb-2" data-target="1000">0</h3>
+      <p class="text-gold-accent font-medium uppercase tracking-widest text-sm">Projects Completed</p>
+    </div>
+    <div class="stat-card reveal">
+      <h3 class="stat-number text-5xl md:text-6xl font-bold text-white mb-2" data-target="6">0</h3>
+      <p class="text-gold-accent font-medium uppercase tracking-widest text-sm">Services Offered</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== WHY CHOOSE US ===== -->
+<section class="py-24 bg-light-gray" id="why-us">
+<div class="max-w-7xl mx-auto px-8">
+  <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+    <span class="text-primary-teal font-bold tracking-[0.2em] uppercase text-sm mb-4 block">Our Advantages</span>
+    <h2 class="font-headline text-3xl md:text-4xl font-bold text-dark-text leading-tight">Why Choose Us</h2>
+    <div class="w-20 h-1 bg-gradient-to-r from-primary-teal to-gold-accent mx-auto mt-4 rounded-full"></div>
+  </div>
+  <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 stagger-children">
+    <div class="feature-card glass-card p-8 rounded-xl shadow-sm hover:shadow-xl border border-white/50 group reveal">
+      <div class="w-14 h-14 bg-primary-teal/5 rounded-lg flex items-center justify-center text-primary-teal mb-6 group-hover:bg-primary-teal group-hover:text-white transition-colors duration-300">
+        <span class="material-symbols-outlined text-3xl">groups</span>
+      </div>
+      <h4 class="text-xl font-bold text-dark-text mb-3">Expert Team</h4>
+      <p class="text-gray-600 leading-relaxed">Certified professionals with deep expertise in multi-industry financial landscapes.</p>
+    </div>
+    <div class="feature-card glass-card p-8 rounded-xl shadow-sm hover:shadow-xl border border-white/50 group reveal">
+      <div class="w-14 h-14 bg-primary-teal/5 rounded-lg flex items-center justify-center text-primary-teal mb-6 group-hover:bg-primary-teal group-hover:text-white transition-colors duration-300">
+        <span class="material-symbols-outlined text-3xl">schedule</span>
+      </div>
+      <h4 class="text-xl font-bold text-dark-text mb-3">Timely Delivery</h4>
+      <p class="text-gray-600 leading-relaxed">On-time completion of all filings and reports, ensuring you never miss a deadline.</p>
+    </div>
+    <div class="feature-card glass-card p-8 rounded-xl shadow-sm hover:shadow-xl border border-white/50 group reveal">
+      <div class="w-14 h-14 bg-primary-teal/5 rounded-lg flex items-center justify-center text-primary-teal mb-6 group-hover:bg-primary-teal group-hover:text-white transition-colors duration-300">
+        <span class="material-symbols-outlined text-3xl">payments</span>
+      </div>
+      <h4 class="text-xl font-bold text-dark-text mb-3">Affordable Pricing</h4>
+      <p class="text-gray-600 leading-relaxed">Competitive rates without compromising quality, making expert advice accessible.</p>
+    </div>
+    <div class="feature-card glass-card p-8 rounded-xl shadow-sm hover:shadow-xl border border-white/50 group reveal">
+      <div class="w-14 h-14 bg-primary-teal/5 rounded-lg flex items-center justify-center text-primary-teal mb-6 group-hover:bg-primary-teal group-hover:text-white transition-colors duration-300">
+        <span class="material-symbols-outlined text-3xl">person_pin</span>
+      </div>
+      <h4 class="text-xl font-bold text-dark-text mb-3">Personalized Service</h4>
+      <p class="text-gray-600 leading-relaxed">Tailored solutions for your unique needs, from startups to established enterprises.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="py-24 bg-white" id="testimonials">
+<div class="max-w-7xl mx-auto px-8">
+  <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+    <span class="text-primary-teal font-bold tracking-[0.2em] uppercase text-sm mb-4 block">Testimonials</span>
+    <h2 class="font-headline text-3xl md:text-4xl font-bold text-dark-text leading-tight">What Our Clients Say</h2>
+    <div class="w-20 h-1 bg-gradient-to-r from-primary-teal to-gold-accent mx-auto mt-4 rounded-full"></div>
+    <div class="mt-8">
+      <button id="add-review-btn" onclick="openReviewModal()" class="hidden bg-dark-emerald text-white px-6 py-2.5 rounded-lg hover:bg-primary-teal transition-all font-medium flex items-center justify-center gap-2 mx-auto shadow-md">
+        <span class="material-symbols-outlined text-sm">edit_square</span> Add Your Review
+      </button>
+      <p id="login-to-review-msg" class="text-gray-500 text-sm mt-4">Please <button onclick="openAuthModal()" class="text-primary-teal font-semibold hover:underline">log in</button> to add a review.</p>
+    </div>
+  </div>
+  <div class="relative overflow-hidden reveal">
+    <div class="flex transition-transform duration-700 ease-in-out gap-8" id="testimonial-track">
+      <!-- Testimonial 1 -->
+      <div class="min-w-full md:min-w-[calc(50%-16px)] lg:min-w-[calc(33.33%-21.33px)] bg-light-gray p-8 rounded-xl border border-gray-100 relative group hover:shadow-lg transition-shadow duration-300">
+        <span class="material-symbols-outlined text-6xl text-gold-accent/20 absolute top-4 right-4" style="font-variation-settings: 'FILL' 1;">format_quote</span>
+        <div class="flex gap-1 text-gold-accent mb-6">
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+        </div>
+        <p class="text-gray-700 italic leading-relaxed mb-8 relative z-10">"Parekh Consultancy transformed how we handle our corporate taxes. Pankaj's insights into tax planning saved us significant amounts while keeping us fully compliant."</p>
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-full bg-primary-teal flex items-center justify-center text-white font-bold">RK</div>
+          <div>
+            <h5 class="font-bold text-dark-text">Rajesh Kumar</h5>
+            <p class="text-sm text-gray-500">CEO, Tech Innovations Pvt Ltd</p>
+          </div>
+        </div>
+      </div>
+      <!-- Testimonial 2 -->
+      <div class="min-w-full md:min-w-[calc(50%-16px)] lg:min-w-[calc(33.33%-21.33px)] bg-light-gray p-8 rounded-xl border border-gray-100 relative group hover:shadow-lg transition-shadow duration-300">
+        <span class="material-symbols-outlined text-6xl text-gold-accent/20 absolute top-4 right-4" style="font-variation-settings: 'FILL' 1;">format_quote</span>
+        <div class="flex gap-1 text-gold-accent mb-6">
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+        </div>
+        <p class="text-gray-700 italic leading-relaxed mb-8 relative z-10">"As a freelancer, taxation used to be a nightmare. Pankaj made it simple, transparent, and manageable. I can finally focus on my work without stress."</p>
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-full bg-primary-teal flex items-center justify-center text-white font-bold">AS</div>
+          <div>
+            <h5 class="font-bold text-dark-text">Anjali Sharma</h5>
+            <p class="text-sm text-gray-500">Freelance Designer</p>
+          </div>
+        </div>
+      </div>
+      <!-- Testimonial 3 -->
+      <div class="min-w-full md:min-w-[calc(50%-16px)] lg:min-w-[calc(33.33%-21.33px)] bg-light-gray p-8 rounded-xl border border-gray-100 relative group hover:shadow-lg transition-shadow duration-300">
+        <span class="material-symbols-outlined text-6xl text-gold-accent/20 absolute top-4 right-4" style="font-variation-settings: 'FILL' 1;">format_quote</span>
+        <div class="flex gap-1 text-gold-accent mb-6">
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+        </div>
+        <p class="text-gray-700 italic leading-relaxed mb-8 relative z-10">"The professional approach and attention to detail at Parekh Consultancy is unmatched. They are truly partners in our financial growth."</p>
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-full bg-primary-teal flex items-center justify-center text-white font-bold">VM</div>
+          <div>
+            <h5 class="font-bold text-dark-text">Vikram Mehta</h5>
+            <p class="text-sm text-gray-500">Director, Mehta Logistics</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Navigation Dots -->
+    <div class="flex justify-center mt-12 gap-3" id="testimonial-dots">
+      <button class="w-8 h-3 rounded-full bg-primary-teal transition-all duration-300" onclick="slideTestimonials(0)"></button>
+      <button class="w-3 h-3 rounded-full bg-gray-300 transition-all duration-300" onclick="slideTestimonials(1)"></button>
+      <button class="w-3 h-3 rounded-full bg-gray-300 transition-all duration-300 md:hidden" onclick="slideTestimonials(2)"></button>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== CONTACT SECTION ===== -->
+<section class="py-24 bg-light-gray" id="contact">
+<div class="max-w-7xl mx-auto px-6 md:px-8">
+  <div class="text-center mb-16 reveal">
+    <span class="text-primary-teal font-bold tracking-wider uppercase text-sm">Reach Out</span>
+    <h2 class="font-headline text-3xl md:text-4xl font-bold text-dark-text mt-2">Get In Touch</h2>
+    <div class="w-20 h-1 bg-gradient-to-r from-primary-teal to-gold-accent mx-auto mt-4 rounded-full"></div>
+  </div>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden rounded-2xl shadow-2xl reveal-scale">
+    <!-- Left Column: Contact Info -->
+    <div class="bg-dark-emerald p-8 md:p-12 text-white flex flex-col justify-between">
+      <div>
+        <span class="text-gold-accent font-bold tracking-wider uppercase text-sm">Contact Us</span>
+        <h3 class="font-headline text-3xl md:text-4xl font-bold mt-2 mb-6">Let's Talk</h3>
+        <p class="text-white/70 mb-12 leading-relaxed">Have questions about our services? Reach out to us and we'll get back to you promptly.</p>
+        <div class="space-y-6">
+          <div class="flex items-start gap-4 group">
+            <div class="bg-white/10 p-3 rounded-lg group-hover:bg-gold-accent/20 transition-colors duration-300">
+              <span class="material-symbols-outlined text-gold-accent">call</span>
+            </div>
+            <div>
+              <p class="text-xs text-white/60 uppercase tracking-widest">Phone</p>
+              <a href="tel:+919934593000" class="font-medium hover:text-gold-accent transition-colors">+91 9934593000</a>
+            </div>
+          </div>
+          <div class="flex items-start gap-4 group">
+            <div class="bg-white/10 p-3 rounded-lg group-hover:bg-gold-accent/20 transition-colors duration-300">
+              <span class="material-symbols-outlined text-gold-accent">mail</span>
+            </div>
+            <div>
+              <p class="text-xs text-white/60 uppercase tracking-widest">Email</p>
+              <a href="mailto:info@parekhconsultancy.com" class="font-medium hover:text-gold-accent transition-colors">info@parekhconsultancy.com</a>
+            </div>
+          </div>
+          <div class="flex items-start gap-4 group">
+            <div class="bg-white/10 p-3 rounded-lg group-hover:bg-gold-accent/20 transition-colors duration-300">
+              <span class="material-symbols-outlined text-gold-accent">location_on</span>
+            </div>
+            <div>
+              <p class="text-xs text-white/60 uppercase tracking-widest">Address</p>
+              <p class="font-medium">Parekh Consultancy Service, India</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4 group">
+            <div class="bg-white/10 p-3 rounded-lg group-hover:bg-gold-accent/20 transition-colors duration-300">
+              <span class="material-symbols-outlined text-gold-accent">schedule</span>
+            </div>
+            <div>
+              <p class="text-xs text-white/60 uppercase tracking-widest">Working Hours</p>
+              <p class="font-medium">Mon-Sat: 10:00 AM - 7:00 PM</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-12 pt-8 border-t border-white/10">
+        <p class="text-white/50 text-sm mb-4">Follow us on social media</p>
+        <div class="flex gap-4">
+          <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold-accent transition-all duration-300 hover:scale-110" href="javascript:void(0)" onclick="alert('Website link coming soon!')" title="Website"><span class="material-symbols-outlined text-xl">public</span></a>
+          <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold-accent transition-all duration-300 hover:scale-110" href="javascript:void(0)" onclick="alert('Twitter/X link coming soon!')" title="Twitter"><span class="material-symbols-outlined text-xl">share</span></a>
+          <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold-accent transition-all duration-300 hover:scale-110" href="javascript:void(0)" onclick="alert('LinkedIn link coming soon!')" title="LinkedIn"><span class="material-symbols-outlined text-xl">groups</span></a>
+          <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold-accent transition-all duration-300 hover:scale-110" href="javascript:void(0)" onclick="alert('Instagram link coming soon!')" title="Instagram"><span class="material-symbols-outlined text-xl">photo_camera</span></a>
+        </div>
+      </div>
+    </div>
+    <!-- Right Column: Contact Form -->
+    <div class="bg-white p-8 md:p-12">
+      <h3 class="font-headline text-2xl font-bold text-primary-teal mb-2">Send Us a Message</h3>
+      <p class="text-gray-500 mb-8 text-sm">Fill in the details below and we'll get back to you within 24 hours.</p>
+      <form class="space-y-5" id="contact-form">
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-3 top-3.5 text-gray-400">person</span>
+          <input class="form-input w-full pl-11 pr-4 py-3.5 rounded-lg border border-gray-200 focus:border-primary-teal focus:ring-2 focus:ring-primary-teal/20 outline-none" placeholder="Full Name *" type="text" required id="name-input"/>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-3.5 text-gray-400">mail</span>
+            <input class="form-input w-full pl-11 pr-4 py-3.5 rounded-lg border border-gray-200 focus:border-primary-teal focus:ring-2 focus:ring-primary-teal/20 outline-none" placeholder="Email Address *" type="email" required id="email-input"/>
+          </div>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-3.5 text-gray-400">call</span>
+            <input class="form-input w-full pl-11 pr-4 py-3.5 rounded-lg border border-gray-200 focus:border-primary-teal focus:ring-2 focus:ring-primary-teal/20 outline-none" placeholder="Phone Number *" type="tel" required id="phone-input"/>
+          </div>
+        </div>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-3 top-3.5 text-gray-400">settings</span>
+          <select class="form-input w-full pl-11 pr-4 py-3.5 rounded-lg border border-gray-200 focus:border-primary-teal focus:ring-2 focus:ring-primary-teal/20 outline-none appearance-none bg-white" id="service-select" required>
+            <option disabled="" selected="" value="">Select Service Needed *</option>
+            <option>GST Registration</option>
+            <option>GST Compliance & Returns</option>
+            <option>Income Tax Returns</option>
+            <option>Computerized Accounting</option>
+            <option>Tender Related Paper Works</option>
+            <option>Bank Project Reports</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="relative">
+          <textarea class="form-input w-full p-4 rounded-lg border border-gray-200 focus:border-primary-teal focus:ring-2 focus:ring-primary-teal/20 outline-none resize-none" placeholder="Your Message *" rows="4" required id="message-input"></textarea>
+        </div>
+        <button class="w-full bg-primary-teal text-white py-4 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-dark-emerald transition-all duration-300 shadow-lg shadow-primary-teal/20 group hover:shadow-xl active:scale-[0.98]" type="submit" id="submit-btn">
+          <span id="btn-text">Send Message</span>
+          <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" id="btn-icon">arrow_forward</span>
+        </button>
+        <!-- Success message -->
+        <div class="hidden text-center p-4 bg-primary-teal/10 rounded-lg border border-primary-teal/20" id="success-msg">
+          <span class="material-symbols-outlined text-primary-teal text-3xl mb-2" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          <p class="text-primary-teal font-semibold">Thank you! Your message has been sent successfully.</p>
+          <p class="text-gray-500 text-sm mt-1">We'll get back to you within 24 hours.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="bg-dark-emerald w-full py-16">
+<div class="max-w-7xl mx-auto px-8">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+    <!-- Brand -->
+    <div>
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 bg-gold-accent rounded-lg flex items-center justify-center">
+          <span class="font-headline text-xl font-bold text-dark-emerald">PS</span>
+        </div>
+        <span class="font-headline text-lg font-semibold text-white">Parekh Consultancy</span>
+      </div>
+      <p class="font-body text-sm text-white/70 leading-relaxed max-w-xs">
+        Expert financial advisory and tax consultancy services for individuals and corporations across India.
+      </p>
+    </div>
+    <!-- Quick Links -->
+    <div>
+      <h4 class="font-headline text-lg font-semibold text-white mb-4">Quick Links</h4>
+      <nav class="flex flex-col gap-3">
+        <a class="text-white/60 hover:text-gold-accent transition-colors text-sm" href="#about">About Us</a>
+        <a class="text-white/60 hover:text-gold-accent transition-colors text-sm" href="#services">Our Services</a>
+        <a class="text-white/60 hover:text-gold-accent transition-colors text-sm" href="#why-us">Why Choose Us</a>
+        <a class="text-white/60 hover:text-gold-accent transition-colors text-sm" href="#testimonials">Testimonials</a>
+        <a class="text-white/60 hover:text-gold-accent transition-colors text-sm" href="#contact">Contact</a>
+      </nav>
+    </div>
+    <!-- Contact -->
+    <div>
+      <h4 class="font-headline text-lg font-semibold text-white mb-4">Contact Info</h4>
+      <div class="space-y-3 text-sm">
+        <p class="text-white/60 flex items-center gap-2"><span class="material-symbols-outlined text-gold-accent text-base">call</span> +91 9934593000</p>
+        <p class="text-white/60 flex items-center gap-2"><span class="material-symbols-outlined text-gold-accent text-base">mail</span> info@parekhconsultancy.com</p>
+        <p class="text-white/60 flex items-center gap-2"><span class="material-symbols-outlined text-gold-accent text-base">schedule</span> Mon-Sat: 10 AM - 7 PM</p>
+      </div>
+    </div>
+  </div>
+  <!-- Bottom bar -->
+  <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+    <p class="font-body text-sm text-white/50">© 2024 Parekh Consultancy Service. All rights reserved.</p>
+    <nav class="flex flex-wrap justify-center gap-6">
+      <a class="text-white/50 hover:text-white text-sm transition-colors cursor-pointer" onclick="alert('Privacy Policy will be updated soon.')">Privacy Policy</a>
+      <a class="text-white/50 hover:text-white text-sm transition-colors cursor-pointer" onclick="alert('Terms of Service will be updated soon.')">Terms of Service</a>
+    </nav>
+  </div>
+</div>
+</footer>
+
+<!-- ===== BACK TO TOP ===== -->
+<button id="back-to-top" aria-label="Back to top">
+<span class="material-symbols-outlined">keyboard_arrow_up</span>
+</button>
+
+<!-- ===== WHATSAPP FLOAT ===== -->
+<a href="https://wa.me/919934593000" target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp">
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+  <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.325-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+</svg>
+</a>
+
+<!-- ===== MODALS ===== -->
+
+<!-- Overlay -->
+<div id="modal-overlay" class="fixed inset-0 bg-black/60 z-[60] hidden opacity-0 transition-opacity duration-300" onclick="closeAllModals()"></div>
+
+<!-- Auth Modal -->
+<div id="auth-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl z-[70] w-11/12 max-w-md p-8 hidden opacity-0 scale-95 transition-all duration-300">
+  <button onclick="closeAllModals()" class="absolute top-4 right-4 text-gray-400 hover:text-dark-text"><span class="material-symbols-outlined">close</span></button>
+  <div class="text-center mb-8">
+    <div class="w-12 h-12 bg-primary-teal rounded-lg flex items-center justify-center mx-auto mb-4">
+      <span class="font-headline text-2xl font-bold text-white">PS</span>
+    </div>
+    <h3 class="font-headline text-2xl font-bold text-dark-text">Welcome Back</h3>
+    <p class="text-sm text-gray-500 mt-2">Sign in to customize your profile and leave reviews.</p>
+  </div>
+  <div class="flex justify-center mb-6 border-b border-gray-200">
+    <button onclick="switchAuthTab('login')" id="tab-login" class="px-6 py-2 font-headline font-bold text-primary-teal border-b-2 border-primary-teal outline-none transition-all">Log In</button>
+    <button onclick="switchAuthTab('signup')" id="tab-signup" class="px-6 py-2 font-headline font-bold text-gray-400 border-b-2 border-transparent hover:text-gray-600 outline-none transition-all">Sign Up</button>
+  </div>
+
+  <!-- Login Form -->
+  <div id="login-form">
+    <div class="space-y-4 mb-6">
+      <input type="email" id="login-email" placeholder="Email address" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all">
+      <input type="password" id="login-password" placeholder="Password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all">
+    </div>
+    <button onclick="handleLogin()" id="btn-login" class="w-full bg-dark-emerald text-white font-medium py-3 rounded-lg hover:bg-primary-teal transition-colors shadow-md flex items-center justify-center">
+      Log In
+    </button>
+  </div>
+
+  <!-- Signup Form -->
+  <div id="signup-form" class="hidden">
+    <div class="space-y-4 mb-6">
+      <input type="text" id="signup-name" placeholder="Full name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all">
+      <input type="email" id="signup-email" placeholder="Email address" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all">
+      <input type="password" id="signup-password" placeholder="Password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all">
+      <input type="password" id="signup-confirm-password" placeholder="Confirm password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all">
+      <div class="space-y-1">
+        <label class="block text-xs font-medium text-gray-500">Profile Picture (Optional)</label>
+        <input type="file" id="signup-dp" accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-teal/10 file:text-primary-teal hover:file:bg-primary-teal/20">
+      </div>
+    </div>
+    <button onclick="handleSignup()" id="btn-signup" class="w-full bg-dark-emerald text-white font-medium py-3 rounded-lg hover:bg-primary-teal transition-colors shadow-md flex items-center justify-center">
+      Create Account
+    </button>
+  </div>
+</div>
+
+<!-- Profile Modal -->
+<div id="profile-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl z-[70] w-11/12 max-w-md p-8 hidden opacity-0 scale-95 transition-all duration-300">
+  <button onclick="closeAllModals()" class="absolute top-4 right-4 text-gray-400 hover:text-dark-text"><span class="material-symbols-outlined">close</span></button>
+  <h3 class="font-headline text-2xl font-bold text-dark-text mb-6">Your Profile</h3>
+  
+  <div class="flex flex-col items-center mb-6">
+    <img id="profile-modal-dp" src="" class="w-24 h-24 rounded-full border-4 border-primary-teal object-cover mb-4 shadow-md">
+    <div class="w-full space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Display Name</label>
+        <input type="text" id="profile-name-input" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all">
+        <p id="name-change-warning" class="text-xs text-orange-500 mt-1"><span class="material-symbols-outlined text-[12px] align-middle">info</span> Note: You can only change your name once.</p>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Upload New Profile Picture</label>
+        <input type="file" id="profile-dp-input" accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-teal/10 file:text-primary-teal hover:file:bg-primary-teal/20">
+      </div>
+    </div>
+  </div>
+  
+  <div class="flex gap-3">
+    <button onclick="saveProfile()" class="flex-1 bg-primary-teal text-white py-2.5 rounded-lg font-medium hover:bg-dark-emerald transition-colors">Save Changes</button>
+    <button onclick="logout()" class="flex-1 border border-red-500 text-red-500 py-2.5 rounded-lg font-medium hover:bg-red-50 transition-colors">Log Out</button>
+  </div>
+</div>
+
+<!-- Review Modal -->
+<div id="review-modal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl z-[70] w-11/12 max-w-lg p-8 hidden opacity-0 scale-95 transition-all duration-300">
+  <button onclick="closeAllModals()" class="absolute top-4 right-4 text-gray-400 hover:text-dark-text"><span class="material-symbols-outlined">close</span></button>
+  <h3 class="font-headline text-2xl font-bold text-dark-text mb-2">Write a Review</h3>
+  <p class="text-gray-500 text-sm mb-6">Share your experience with Parekh Consultancy Service.</p>
+  
+  <div class="mb-6">
+    <label class="block text-sm font-medium text-gray-700 mb-2">Your Rating</label>
+    <div class="flex gap-2" id="star-rating-container">
+      <button class="star-btn text-gray-300 hover:text-gold-accent transition-colors" data-rating="1"><span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">star</span></button>
+      <button class="star-btn text-gray-300 hover:text-gold-accent transition-colors" data-rating="2"><span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">star</span></button>
+      <button class="star-btn text-gray-300 hover:text-gold-accent transition-colors" data-rating="3"><span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">star</span></button>
+      <button class="star-btn text-gray-300 hover:text-gold-accent transition-colors" data-rating="4"><span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">star</span></button>
+      <button class="star-btn text-gray-300 hover:text-gold-accent transition-colors" data-rating="5"><span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">star</span></button>
+    </div>
+    <input type="hidden" id="selected-rating" value="0">
+  </div>
+  
+  <div class="mb-6">
+    <label class="block text-sm font-medium text-gray-700 mb-2">Your Review</label>
+    <textarea id="review-text-input" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-teal focus:border-primary-teal outline-none transition-all resize-none" placeholder="Tell us about the services you received..."></textarea>
+  </div>
+  
+  <button onclick="submitReview()" class="w-full bg-dark-emerald text-white py-3 rounded-lg font-bold hover:bg-primary-teal transition-colors flex items-center justify-center gap-2">
+    Submit Review <span class="material-symbols-outlined text-sm">send</span>
+  </button>
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ===== CINEMATIC INTRO (FAST — ~3s total) =====
+  document.body.classList.add('intro-active');
+  
+  // Create fewer intro particles (12 instead of 30)
+  const introParticlesEl = document.getElementById('intro-particles');
+  const introFrag = document.createDocumentFragment();
+  for (let i = 0; i < 12; i++) {
+    const p = document.createElement('div');
+    p.className = 'intro-particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = Math.random() * 100 + '%';
+    const size = (Math.random() * 5 + 2) + 'px';
+    p.style.width = size;
+    p.style.height = size;
+    introFrag.appendChild(p);
+  }
+  introParticlesEl.appendChild(introFrag);
+
+  // Intro particles — GPU-only (transform + opacity)
+  anime({
+    targets: '.intro-particle',
+    translateY: () => anime.random(-60, 60),
+    translateX: () => anime.random(-60, 60),
+    scale: [0, () => anime.random(1, 2.5)],
+    opacity: [0, () => Math.random() * 0.5 + 0.2],
+    duration: () => anime.random(1500, 3000),
+    delay: () => anime.random(0, 600),
+    easing: 'easeOutQuad',
+    direction: 'alternate',
+    loop: 1
+  });
+
+  // Main intro timeline (snappier — ~3s)
+  const introTimeline = anime.timeline({ easing: 'easeOutExpo' });
+
+  introTimeline
+    .add({
+      targets: '#intro-logo',
+      opacity: [0, 1],
+      scale: [0.3, 1],
+      rotateY: [90, 0],
+      duration: 800,
+      easing: 'easeOutBack'
+    })
+    .add({
+      targets: '#intro-line',
+      width: ['0px', '180px'],
+      opacity: [0, 1],
+      duration: 500,
+      easing: 'easeInOutQuart'
+    }, '-=300')
+    .add({
+      targets: '#intro-tagline',
+      opacity: [0, 1],
+      translateY: [20, 0],
+      duration: 500,
+      easing: 'easeOutQuart'
+    }, '-=200')
+    // Hold briefly, then fade out
+    .add({
+      targets: ['#intro-logo', '#intro-tagline', '#intro-line'],
+      opacity: 0,
+      scale: 0.85,
+      duration: 400,
+      delay: 500,
+      easing: 'easeInQuart'
+    })
+    .add({
+      targets: '.intro-particle',
+      opacity: 0,
+      duration: 250,
+      easing: 'linear'
+    }, '-=300')
+    // Panels slide — 700ms (was 1000ms)
+    .add({
+      targets: '.intro-panel-left',
+      translateX: '-100%',
+      duration: 700,
+      easing: 'easeInOutQuart'
+    })
+    .add({
+      targets: '.intro-panel-right',
+      translateX: '100%',
+      duration: 700,
+      easing: 'easeInOutQuart'
+    }, '-=700')
+    .add({
+      targets: '#intro-overlay',
+      opacity: 0,
+      duration: 150,
+      easing: 'linear',
+      complete: () => {
+        const overlay = document.getElementById('intro-overlay');
+        overlay.style.display = 'none';
+        overlay.style.pointerEvents = 'none';
+        // Free GPU memory
+        introParticlesEl.innerHTML = '';
+        document.body.classList.remove('intro-active');
+        animateHeroSection();
+      }
+    });
+
+  // ===== HERO ENTRANCE (anime.js) =====
+  function animateHeroSection() {
+    document.getElementById('preloader').classList.add('loaded');
+
+    // Navbar
+    anime({
+      targets: '#navbar',
+      translateY: [-60, 0],
+      opacity: [0, 1],
+      duration: 800,
+      easing: 'easeOutExpo',
+      delay: 50
+    });
+
+    // Hero text stagger
+    anime({
+      targets: '#hero .order-2.lg\\:order-1 .hero-text-animate',
+      opacity: [0, 1],
+      translateY: [40, 0],
+      duration: 800,
+      delay: anime.stagger(150, { start: 200 }),
+      easing: 'easeOutExpo',
+      complete: () => {
+        // Remove will-change after animation
+        document.querySelectorAll('.hero-text-animate').forEach(el => {
+          el.style.willChange = 'auto';
+        });
+      }
+    });
+
+    // Hero image
+    anime({
+      targets: '#hero .order-1.lg\\:order-2',
+      opacity: [0, 1],
+      translateX: [80, 0],
+      scale: [0.92, 1],
+      duration: 1000,
+      easing: 'easeOutExpo',
+      delay: 400
+    });
+
+    // Trust indicators
+    anime({
+      targets: '#hero .hero-text-animate:last-child .font-headline',
+      scale: [0.6, 1],
+      opacity: [0, 1],
+      duration: 600,
+      delay: anime.stagger(120, { start: 900 }),
+      easing: 'easeOutBack'
+    });
+
+    // Floating badge
+    anime({
+      targets: '#hero [style*="float"]',
+      translateY: [50, 0],
+      opacity: [0, 1],
+      scale: [0.6, 1],
+      duration: 800,
+      easing: 'easeOutElastic(1, .7)',
+      delay: 1200
+    });
+
+    // Decorative circles
+    anime({
+      targets: '.decorative-circle',
+      scale: [0, 1],
+      opacity: [0, 0.5],
+      duration: 1500,
+      delay: anime.stagger(200, { start: 600 }),
+      easing: 'easeOutExpo'
+    });
+
+    // Show WhatsApp after hero
+    const waBtn = document.querySelector('.whatsapp-float');
+    if (waBtn) {
+      waBtn.style.opacity = '0';
+      waBtn.style.transform = 'scale(0) translateY(50px)';
+      setTimeout(() => {
+        anime({
+          targets: waBtn,
+          opacity: [0, 1],
+          scale: [0, 1],
+          translateY: [50, 0],
+          duration: 600,
+          easing: 'easeOutBack'
+        });
+      }, 2000);
+    }
+  }
+
+  // ===== BACKGROUND PARTICLES (reduced to 6) =====
+  const particlesContainer = document.getElementById('particles-container');
+  const pFrag = document.createDocumentFragment();
+  for (let i = 0; i < 6; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = Math.random() * 100 + '%';
+    const size = (Math.random() * 5 + 3) + 'px';
+    particle.style.width = size;
+    particle.style.height = size;
+    particle.style.animationDuration = (Math.random() * 20 + 20) + 's';
+    particle.style.animationDelay = (Math.random() * 10) + 's';
+    particle.style.opacity = Math.random() * 0.2;
+    pFrag.appendChild(particle);
+  }
+  particlesContainer.appendChild(pFrag);
+
+  // ===== MOBILE MENU (anime.js) =====
+  const mobileBtn = document.getElementById('mobile-menu-btn');
+  const mobileNav = document.getElementById('mobile-nav');
+  mobileBtn.addEventListener('click', () => {
+    const isHidden = mobileNav.classList.contains('hidden');
+    if (isHidden) {
+      mobileNav.classList.remove('hidden');
+      mobileNav.classList.add('flex');
+      anime({
+        targets: mobileNav,
+        opacity: [0, 1],
+        translateX: ['100%', '0%'],
+        duration: 500,
+        easing: 'easeOutExpo'
+      });
+      anime({
+        targets: '#mobile-nav nav a, #mobile-nav nav button',
+        translateX: [60, 0],
+        opacity: [0, 1],
+        delay: anime.stagger(60, { start: 150 }),
+        duration: 500,
+        easing: 'easeOutExpo'
+      });
+    } else {
+      anime({
+        targets: mobileNav,
+        opacity: [1, 0],
+        translateX: ['0%', '100%'],
+        duration: 350,
+        easing: 'easeInQuad',
+        complete: () => {
+          mobileNav.classList.add('hidden');
+          mobileNav.classList.remove('flex');
+        }
+      });
+    }
+    mobileBtn.querySelector('.material-symbols-outlined').textContent = isHidden ? 'close' : 'menu';
+  });
+  mobileNav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      anime({
+        targets: mobileNav,
+        opacity: [1, 0],
+        translateX: ['0%', '100%'],
+        duration: 350,
+        easing: 'easeInQuad',
+        complete: () => {
+          mobileNav.classList.add('hidden');
+          mobileNav.classList.remove('flex');
+          mobileBtn.querySelector('.material-symbols-outlined').textContent = 'menu';
+        }
+      });
+    });
+  });
+
+  // ===== CONSOLIDATED SCROLL HANDLER (ONE listener, rAF-throttled) =====
+  // Cache all DOM refs outside the handler
+  const navbar = document.getElementById('navbar');
+  const navContainer = navbar.querySelector('div');
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+  const backToTop = document.getElementById('back-to-top');
+  let lastScrollY = 0;
+  let scrollTicking = false;
+  let prevNavbarState = false;
+  let prevBackToTopState = false;
+  let prevActiveSection = '';
+
+  function onScroll() {
+    lastScrollY = window.scrollY;
+    if (!scrollTicking) {
+      requestAnimationFrame(handleScroll);
+      scrollTicking = true;
+    }
+  }
+
+  function handleScroll() {
+    scrollTicking = false;
+    const sy = lastScrollY;
+
+    // -- Navbar shrink --
+    const isScrolled = sy > 50;
+    if (isScrolled !== prevNavbarState) {
+      prevNavbarState = isScrolled;
+      if (isScrolled) {
+        navbar.classList.add('shadow-lg');
+        navbar.classList.remove('shadow-sm');
+        navContainer.classList.add('navbar-scrolled');
+      } else {
+        navbar.classList.remove('shadow-lg');
+        navbar.classList.add('shadow-sm');
+        navContainer.classList.remove('navbar-scrolled');
+      }
+    }
+
+    // -- Active nav link --
+    let current = '';
+    for (let i = sections.length - 1; i >= 0; i--) {
+      if (sy >= sections[i].offsetTop - 120) {
+        current = sections[i].id;
+        break;
+      }
+    }
+    if (current !== prevActiveSection) {
+      prevActiveSection = current;
+      navLinks.forEach(link => {
+        const isActive = link.getAttribute('data-section') === current;
+        link.classList.toggle('text-primary-teal', isActive);
+        link.classList.toggle('font-bold', isActive);
+        link.classList.toggle('border-b-2', isActive);
+        link.classList.toggle('border-gold-accent', isActive);
+        link.classList.toggle('pb-1', isActive);
+        link.classList.toggle('text-dark-text', !isActive);
+      });
+    }
+
+    // -- Back to top button --
+    const shouldShow = sy > 500;
+    if (shouldShow !== prevBackToTopState) {
+      prevBackToTopState = shouldShow;
+      if (shouldShow) {
+        backToTop.classList.add('visible');
+        anime({
+          targets: backToTop,
+          translateY: [20, 0],
+          opacity: [0, 1],
+          duration: 400,
+          easing: 'easeOutBack'
+        });
+      } else {
+        anime({
+          targets: backToTop,
+          translateY: [0, 20],
+          opacity: [1, 0],
+          duration: 300,
+          easing: 'easeInQuad',
+          complete: () => backToTop.classList.remove('visible')
+        });
+      }
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ===== TYPING EFFECT =====
+  const typedEl = document.getElementById('typed-text');
+  const phrases = [
+    'Tax Consultant & Financial Advisor',
+    'GST Registration Expert',
+    'Income Tax Return Specialist',
+    'Your Trusted Financial Partner'
+  ];
+  let phraseIndex = 0, charIndex = 0, isDeleting = false;
+  function typeEffect() {
+    const current = phrases[phraseIndex];
+    if (isDeleting) {
+      typedEl.textContent = current.substring(0, charIndex - 1);
+      charIndex--;
+    } else {
+      typedEl.textContent = current.substring(0, charIndex + 1);
+      charIndex++;
+    }
+    let speed = isDeleting ? 30 : 60;
+    if (!isDeleting && charIndex === current.length) {
+      speed = 2000;
+      isDeleting = true;
+    } else if (isDeleting && charIndex === 0) {
+      isDeleting = false;
+      phraseIndex = (phraseIndex + 1) % phrases.length;
+      speed = 500;
+    }
+    setTimeout(typeEffect, speed);
+  }
+  setTimeout(typeEffect, 1500);
+
+  // ===== SCROLL REVEAL (anime.js, GPU-only props) =====
+  const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+  
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const animProps = { targets: el, opacity: [0, 1], duration: 800, easing: 'easeOutExpo',
+          complete: () => { el.style.willChange = 'auto'; }
+        };
+
+        if (el.classList.contains('reveal-left')) {
+          animProps.translateX = [-60, 0];
+        } else if (el.classList.contains('reveal-right')) {
+          animProps.translateX = [60, 0];
+        } else if (el.classList.contains('reveal-scale')) {
+          animProps.scale = [0.85, 1];
+          animProps.duration = 900;
+        } else {
+          // Stagger-aware
+          const parent = el.parentElement;
+          if (parent && parent.classList.contains('stagger-children')) {
+            const idx = Array.from(parent.querySelectorAll('.reveal')).indexOf(el);
+            animProps.delay = idx * 120;
+          }
+          animProps.translateY = [50, 0];
+        }
+
+        el.classList.add('active');
+        anime(animProps);
+        revealObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  
+  revealElements.forEach(el => revealObserver.observe(el));
+
+  // ===== SERVICE CARD HOVER (GPU-only: transform only, no boxShadow in anime) =====
+  document.querySelectorAll('.service-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      anime({ targets: card, translateY: -10, duration: 300, easing: 'easeOutQuart' });
+      const icon = card.querySelector('.material-symbols-outlined');
+      if (icon) {
+        anime({ targets: icon, rotateY: 360, scale: [1, 1.15, 1], duration: 500, easing: 'easeOutExpo' });
+      }
+    });
+    card.addEventListener('mouseleave', () => {
+      anime({ targets: card, translateY: 0, duration: 300, easing: 'easeOutQuart' });
+    });
+  });
+
+  // ===== FEATURE CARD HOVER (GPU-only) =====
+  document.querySelectorAll('.feature-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      anime({ targets: card, translateY: -8, duration: 300, easing: 'easeOutQuart' });
+    });
+    card.addEventListener('mouseleave', () => {
+      anime({ targets: card, translateY: 0, duration: 300, easing: 'easeOutQuart' });
+    });
+  });
+
+  // ===== COUNTER ANIMATION (anime.js) =====
+  let countersAnimated = false;
+  const statsSection = document.getElementById('stats');
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !countersAnimated) {
+        countersAnimated = true;
+        document.querySelectorAll('.stat-number').forEach((counter, i) => {
+          const target = parseInt(counter.getAttribute('data-target'));
+          const obj = { val: 0 };
+          anime({
+            targets: obj,
+            val: target,
+            round: 1,
+            duration: 2000,
+            delay: i * 150,
+            easing: 'easeOutExpo',
+            update: () => { counter.textContent = obj.val + '+'; }
+          });
+          anime({
+            targets: counter.closest('.stat-card'),
+            scale: [0.85, 1],
+            opacity: [0, 1],
+            duration: 600,
+            delay: i * 150,
+            easing: 'easeOutBack'
+          });
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  counterObserver.observe(statsSection);
+
+  // ===== SECTION HEADING BAR ANIMATION =====
+  const headingObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const bar = entry.target.parentElement?.querySelector('.bg-gradient-to-r');
+        if (bar) {
+          anime({ targets: bar, scaleX: [0, 1], opacity: [0, 1], duration: 600, delay: 300, easing: 'easeOutExpo' });
+        }
+        headingObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('section h2.font-headline').forEach(h => headingObserver.observe(h));
+
+  // ===== CONTACT FORM INPUT FOCUS (GPU-only — transform only) =====
+  document.querySelectorAll('.form-input').forEach(input => {
+    input.addEventListener('focus', () => {
+      anime({ targets: input, translateY: -3, duration: 250, easing: 'easeOutQuart' });
+    });
+    input.addEventListener('blur', () => {
+      anime({ targets: input, translateY: 0, duration: 200, easing: 'easeOutQuart' });
+    });
+  });
+
+  // ===== TESTIMONIAL AUTO-SLIDE =====
+  let currentSlide = 0;
+  setInterval(() => {
+    currentSlide = (currentSlide + 1) % 3;
+    slideTestimonials(currentSlide);
+  }, 5000);
+
+  // ===== CONTACT FORM SUBMIT =====
+  const form = document.getElementById('contact-form');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    const btnText = document.getElementById('btn-text');
+    const btnIcon = document.getElementById('btn-icon');
+    const successMsg = document.getElementById('success-msg');
+
+    btn.disabled = true;
+    btnText.textContent = 'Sending...';
+    btnIcon.textContent = 'hourglass_empty';
+    anime({ targets: btn, scale: [1, 0.97, 1], duration: 250, easing: 'easeInOutQuad' });
+    btn.classList.add('opacity-70');
+
+    setTimeout(() => {
+      btnText.textContent = 'Sent!';
+      btnIcon.textContent = 'check';
+      btn.classList.remove('opacity-70');
+      btn.classList.add('bg-green-600');
+
+      successMsg.classList.remove('hidden');
+      anime({
+        targets: successMsg,
+        opacity: [0, 1],
+        translateY: [15, 0],
+        duration: 500,
+        easing: 'easeOutBack'
+      });
+
+      form.reset();
+
+      setTimeout(() => {
+        anime({
+          targets: successMsg,
+          opacity: 0,
+          translateY: -8,
+          duration: 300,
+          easing: 'easeInQuart',
+          complete: () => {
+            successMsg.classList.add('hidden');
+            btnText.textContent = 'Send Message';
+            btnIcon.textContent = 'arrow_forward';
+            btn.classList.remove('bg-green-600');
+            btn.disabled = false;
+          }
+        });
+      }, 4000);
+    }, 1500);
+  });
+});
+
+// ===== TESTIMONIAL SLIDER =====
+function slideTestimonials(index) {
+  const track = document.getElementById('testimonial-track');
+  const dots = document.querySelectorAll('#testimonial-dots button');
+  if (!track || !track.children[0]) return;
+  const cardWidth = track.children[0].offsetWidth + 32;
+  
+  // Anime.js smooth slide
+  anime({
+    targets: track,
+    translateX: -index * cardWidth,
+    duration: 800,
+    easing: 'easeInOutQuart'
+  });
+  
+  dots.forEach((dot, i) => {
+    if (i === index) {
+      dot.classList.add('bg-primary-teal', 'w-8');
+      dot.classList.remove('bg-gray-300', 'w-3');
+      anime({
+        targets: dot,
+        scale: [0.8, 1],
+        duration: 400,
+        easing: 'easeOutBack'
+      });
+    } else {
+      dot.classList.remove('bg-primary-teal', 'w-8');
+      dot.classList.add('bg-gray-300', 'w-3');
+    }
+  });
+}
+// ===== AUTH & REVIEWS (LOCAL STORAGE MOCK) =====
+let currentUser = JSON.parse(localStorage.getItem('parekh_user')) || null;
+const nameChanged = localStorage.getItem('parekh_name_changed') === 'true';
+
+function updateAuthUI() {
+  const loginBtns = [document.getElementById('nav-login-btn'), document.getElementById('mobile-login-btn')];
+  const profileBtns = [document.getElementById('nav-profile-btn'), document.getElementById('mobile-profile-btn')];
+  const addReviewBtn = document.getElementById('add-review-btn');
+  const loginMsg = document.getElementById('login-to-review-msg');
+
+  if (currentUser) {
+    loginBtns.forEach(btn => btn?.classList.add('hidden'));
+    profileBtns.forEach(btn => {
+      if(btn) {
+        btn.classList.remove('hidden');
+        if (btn.id === 'nav-profile-btn') {
+            btn.classList.add('flex');
+        } else {
+            btn.classList.add('flex');
+        }
+      }
+    });
+    
+    document.getElementById('nav-user-dp').src = currentUser.dp;
+    document.getElementById('nav-user-name').textContent = currentUser.name.split(' ')[0];
+    document.getElementById('mobile-user-dp').src = currentUser.dp;
+    document.getElementById('mobile-user-name').textContent = currentUser.name;
+    
+    if(addReviewBtn) addReviewBtn.classList.remove('hidden');
+    if(loginMsg) loginMsg.classList.add('hidden');
+  } else {
+    loginBtns.forEach(btn => btn?.classList.remove('hidden'));
+    profileBtns.forEach(btn => {
+      if(btn) {
+        btn.classList.add('hidden');
+        btn.classList.remove('flex');
+      }
+    });
+    
+    if(addReviewBtn) addReviewBtn.classList.add('hidden');
+    if(loginMsg) loginMsg.classList.remove('hidden');
+  }
+}
+
+function openAuthModal() {
+  const overlay = document.getElementById('modal-overlay');
+  const modal = document.getElementById('auth-modal');
+  overlay.classList.remove('hidden');
+  modal.classList.remove('hidden');
+  anime({
+    targets: overlay,
+    opacity: [0, 1],
+    duration: 400,
+    easing: 'easeOutQuart'
+  });
+  anime({
+    targets: modal,
+    opacity: [0, 1],
+    scale: [0.85, 1],
+    translateY: [40, 0],
+    duration: 600,
+    easing: 'easeOutBack'
+  });
+}
+
+function openProfileModal() {
+  const overlay = document.getElementById('modal-overlay');
+  const modal = document.getElementById('profile-modal');
+  
+  document.getElementById('profile-name-input').value = currentUser.name;
+  // File inputs cannot be set programmatically. Just clear it.
+  document.getElementById('profile-dp-input').value = '';
+  document.getElementById('profile-modal-dp').src = currentUser.dp;
+  
+  if (nameChanged) {
+    document.getElementById('profile-name-input').disabled = true;
+    document.getElementById('name-change-warning').innerHTML = '<span class="material-symbols-outlined text-[12px] align-middle">lock</span> Name has already been changed once.';
+    document.getElementById('name-change-warning').classList.replace('text-orange-500', 'text-gray-500');
+  }
+  
+  // DP state for file uploads
+  let tempDpBase64 = null;
+
+  // Real-time DP preview
+  document.getElementById('profile-dp-input').addEventListener('change', function(e) {
+      if (e.target.files && e.target.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function(evt) {
+              tempDpBase64 = evt.target.result;
+              document.getElementById('profile-modal-dp').src = tempDpBase64;
+          };
+          reader.readAsDataURL(e.target.files[0]);
+      } else {
+          tempDpBase64 = null;
+          document.getElementById('profile-modal-dp').src = currentUser.dp;
+      }
+  });
+
+  overlay.classList.remove('hidden');
+  modal.classList.remove('hidden');
+  anime({
+    targets: overlay,
+    opacity: [0, 1],
+    duration: 400,
+    easing: 'easeOutQuart'
+  });
+  anime({
+    targets: modal,
+    opacity: [0, 1],
+    scale: [0.85, 1],
+    translateY: [40, 0],
+    duration: 600,
+    easing: 'easeOutBack'
+  });
+}
+
+function openReviewModal() {
+  const overlay = document.getElementById('modal-overlay');
+  const modal = document.getElementById('review-modal');
+  overlay.classList.remove('hidden');
+  modal.classList.remove('hidden');
+  anime({
+    targets: overlay,
+    opacity: [0, 1],
+    duration: 400,
+    easing: 'easeOutQuart'
+  });
+  anime({
+    targets: modal,
+    opacity: [0, 1],
+    scale: [0.85, 1],
+    translateY: [40, 0],
+    duration: 600,
+    easing: 'easeOutBack'
+  });
+}
+
+function closeAllModals() {
+  const overlay = document.getElementById('modal-overlay');
+  const modals = [document.getElementById('auth-modal'), document.getElementById('profile-modal'), document.getElementById('review-modal')];
+  
+  anime({
+    targets: overlay,
+    opacity: [1, 0],
+    duration: 300,
+    easing: 'easeInQuart'
+  });
+  modals.forEach(modal => {
+    if (!modal.classList.contains('hidden')) {
+      anime({
+        targets: modal,
+        opacity: [1, 0],
+        scale: [1, 0.85],
+        translateY: [0, 30],
+        duration: 400,
+        easing: 'easeInQuart',
+        complete: () => {
+          modal.classList.add('hidden');
+        }
+      });
+    }
+  });
+  
+  setTimeout(() => {
+    overlay.classList.add('hidden');
+  }, 400);
+}
+
+function switchAuthTab(tab) {
+  const loginForm = document.getElementById('login-form');
+  const signupForm = document.getElementById('signup-form');
+  const tabLogin = document.getElementById('tab-login');
+  const tabSignup = document.getElementById('tab-signup');
+
+  if (tab === 'login') {
+    // Animate signup out, login in
+    anime({
+      targets: signupForm,
+      opacity: [1, 0],
+      translateX: [0, 30],
+      duration: 300,
+      easing: 'easeInQuart',
+      complete: () => {
+        signupForm.classList.add('hidden');
+        loginForm.classList.remove('hidden');
+        anime({
+          targets: loginForm,
+          opacity: [0, 1],
+          translateX: [-30, 0],
+          duration: 400,
+          easing: 'easeOutQuart'
+        });
+      }
+    });
+    
+    tabLogin.classList.add('text-primary-teal', 'border-primary-teal');
+    tabLogin.classList.remove('text-gray-400', 'border-transparent');
+    
+    tabSignup.classList.remove('text-primary-teal', 'border-primary-teal');
+    tabSignup.classList.add('text-gray-400', 'border-transparent');
+  } else {
+    // Animate login out, signup in
+    anime({
+      targets: loginForm,
+      opacity: [1, 0],
+      translateX: [0, -30],
+      duration: 300,
+      easing: 'easeInQuart',
+      complete: () => {
+        loginForm.classList.add('hidden');
+        signupForm.classList.remove('hidden');
+        anime({
+          targets: signupForm,
+          opacity: [0, 1],
+          translateX: [30, 0],
+          duration: 400,
+          easing: 'easeOutQuart'
+        });
+      }
+    });
+    
+    tabSignup.classList.add('text-primary-teal', 'border-primary-teal');
+    tabSignup.classList.remove('text-gray-400', 'border-transparent');
+    
+    tabLogin.classList.remove('text-primary-teal', 'border-primary-teal');
+    tabLogin.classList.add('text-gray-400', 'border-transparent');
+  }
+}
+
+function handleSignup() {
+  const name = document.getElementById('signup-name').value.trim();
+  const email = document.getElementById('signup-email').value.trim();
+  const pwd = document.getElementById('signup-password').value;
+  const cpwd = document.getElementById('signup-confirm-password').value;
+  const dpInput = document.getElementById('signup-dp');
+
+  if (!name || !email || !pwd) {
+    alert("Please fill in all required fields.");
+    return;
+  }
+  if (pwd !== cpwd) {
+    alert("Passwords do not match!");
+    return;
+  }
+  
+  const users = JSON.parse(localStorage.getItem('parekh_users_db')) || {};
+  
+  const btn = document.getElementById('btn-signup');
+  const originalHtml = btn.innerHTML;
+  btn.innerHTML = '<span class="material-symbols-outlined animate-spin mr-2">refresh</span> Creating...';
+  
+  const finishSignup = async (dpUrl) => {
+    try {
+      const response = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password: pwd, dp: dpUrl })
+      });
+      
+      const data = await response.json();
+      if (!response.ok) {
+        alert(data.error || "Signup failed");
+        btn.innerHTML = originalHtml;
+        return;
+      }
+      
+      // Auto login
+      currentUser = data.user;
+      localStorage.setItem('parekh_user', JSON.stringify(currentUser));
+      localStorage.setItem('parekh_token', data.token); // Store token for future authenticated requests
+      
+      updateAuthUI();
+      closeAllModals();
+      btn.innerHTML = originalHtml;
+    } catch (err) {
+      alert("Network error connecting to server.");
+      btn.innerHTML = originalHtml;
+    }
+  };
+
+  if (dpInput.files && dpInput.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+          finishSignup(evt.target.result);
+      };
+      reader.readAsDataURL(dpInput.files[0]);
+  } else {
+      finishSignup(`https://ui-avatars.com/api/?name=${name}&background=0d6e6e&color=fff`);
+  }
+}
+
+function handleLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pwd = document.getElementById('login-password').value;
+
+  if (!email || !pwd) {
+    alert("Please enter both email and password.");
+    return;
+  }
+
+  const btn = document.getElementById('btn-login');
+  const originalHtml = btn.innerHTML;
+  btn.innerHTML = '<span class="material-symbols-outlined animate-spin mr-2">refresh</span> Logging in...';
+
+  setTimeout(async () => {
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: pwd })
+      });
+      
+      const data = await response.json();
+      if (!response.ok) {
+        alert(data.error || "Invalid email or password.");
+        btn.innerHTML = originalHtml;
+        return;
+      }
+
+      currentUser = data.user;
+      localStorage.setItem('parekh_user', JSON.stringify(currentUser));
+      localStorage.setItem('parekh_token', data.token);
+      
+      updateAuthUI();
+      closeAllModals();
+      btn.innerHTML = originalHtml;
+    } catch (err) {
+      alert("Network error connecting to server.");
+      btn.innerHTML = originalHtml;
+    }
+  }, 500);
+}
+
+function saveProfile() {
+  const newName = document.getElementById('profile-name-input').value.trim();
+  const newDp = tempDpBase64 || currentUser.dp;
+  
+  if (newName !== currentUser.name && !nameChanged) {
+    localStorage.setItem('parekh_name_changed', 'true');
+  }
+  
+  currentUser.name = newName || currentUser.name;
+  currentUser.dp = newDp;
+  
+  const nameParts = currentUser.name.split(' ');
+  currentUser.initials = nameParts.length > 1 ? nameParts[0][0] + nameParts[1][0] : nameParts[0][0];
+  
+  localStorage.setItem('parekh_user', JSON.stringify(currentUser));
+  
+  // Also update the database if we have an email
+  if (currentUser.email) {
+     fetch('/api/profile', {
+       method: 'POST',
+       headers: { 'Content-Type': 'application/json' },
+       body: JSON.stringify({ email: currentUser.email, name: currentUser.name, dp: currentUser.dp })
+     }).catch(err => console.error("Failed to sync profile to server", err));
+  }
+  
+  updateAuthUI();
+  closeAllModals();
+}
+
+function logout() {
+  currentUser = null;
+  localStorage.removeItem('parekh_user');
+  updateAuthUI();
+  closeAllModals();
+}
+
+// Star Rating Logic
+const starBtns = document.querySelectorAll('.star-btn');
+const ratingInput = document.getElementById('selected-rating');
+
+starBtns.forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    const rating = parseInt(e.currentTarget.getAttribute('data-rating'));
+    ratingInput.value = rating;
+    
+    starBtns.forEach((s, idx) => {
+      const icon = s.querySelector('span');
+      if (idx < rating) {
+        s.classList.replace('text-gray-300', 'text-gold-accent');
+      } else {
+        s.classList.replace('text-gold-accent', 'text-gray-300');
+      }
+    });
+  });
+});
+
+function submitReview() {
+  const rating = parseInt(ratingInput.value);
+  const text = document.getElementById('review-text-input').value.trim();
+  
+  if (rating === 0 || text === '') {
+    alert("Please select a star rating and write a review.");
+    return;
+  }
+  
+  const btn = document.querySelector('#review-modal button:last-child');
+  const originalHtml = btn.innerHTML;
+  btn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Submitting...';
+  
+  setTimeout(async () => {
+    try {
+      const response = await fetch('/api/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: currentUser.email, rating, text })
+      });
+      
+      if (!response.ok) {
+         const data = await response.json();
+         alert(data.error || "Failed to submit review");
+         btn.innerHTML = originalHtml;
+         return;
+      }
+      
+      const newReview = await response.json();
+      
+      // Generate Stars HTML
+      let starsHtml = '';
+      for(let i = 0; i < 5; i++) {
+          if(i < rating) starsHtml += `<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>`;
+          else starsHtml += `<span class="material-symbols-outlined text-sm text-gray-300" style="font-variation-settings: 'FILL' 1;">star</span>`;
+      }
+
+      const reviewHtml = `
+        <div class="min-w-full md:min-w-[calc(50%-16px)] lg:min-w-[calc(33.33%-21.33px)] bg-light-gray p-8 rounded-xl border border-primary-teal/20 relative group hover:shadow-lg transition-shadow duration-300">
+          <span class="absolute top-4 right-4 bg-primary-teal text-white text-[10px] uppercase font-bold px-2 py-1 rounded-full">New</span>
+          <div class="flex gap-1 text-gold-accent mb-6">
+            ${starsHtml}
+          </div>
+          <p class="text-gray-700 italic leading-relaxed mb-8 relative z-10">"${text}"</p>
+          <div class="flex items-center gap-4 mt-auto">
+            <img src="${newReview.dp}" class="w-12 h-12 rounded-full border-2 border-primary-teal object-cover">
+            <div>
+              <h5 class="font-bold text-dark-text">${newReview.name}</h5>
+              <p class="text-sm text-gray-500">Verified Client</p>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Prepend to track
+      const track = document.getElementById('testimonial-track');
+      track.insertAdjacentHTML('afterbegin', reviewHtml);
+      
+      // Update Dots logic - adding a new slide means we need another dot or adjust sliding, 
+      // but for simplicity we'll just prepend it and let CSS handle the flex
+      
+      // Reset Form & Close
+      ratingInput.value = 0;
+      document.getElementById('review-text-input').value = '';
+      starBtns.forEach(s => s.classList.replace('text-gold-accent', 'text-gray-300'));
+      
+      closeAllModals();
+      btn.innerHTML = originalHtml;
+      
+      // Jump to slide 0
+      slideTestimonials(0);
+    } catch(err) {
+      alert("Network error.");
+      btn.innerHTML = originalHtml;
+    }
+  }, 500);
+}
+
+// Initialize Auth
+updateAuthUI();
+
+// Load Global Reviews
+async function loadGlobalReviews() {
+  try {
+    const response = await fetch('/api/reviews');
+    if (response.ok) {
+      const reviews = await response.json();
+      if (reviews.length > 0) {
+        const track = document.getElementById('testimonial-track');
+        reviews.forEach(review => {
+            let starsHtml = '';
+            for(let i = 0; i < 5; i++) {
+                if(i < review.rating) starsHtml += `<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>`;
+                else starsHtml += `<span class="material-symbols-outlined text-sm text-gray-300" style="font-variation-settings: 'FILL' 1;">star</span>`;
+            }
+            const html = `
+              <div class="min-w-full md:min-w-[calc(50%-16px)] lg:min-w-[calc(33.33%-21.33px)] bg-light-gray p-8 rounded-xl border border-primary-teal/20 relative group hover:shadow-lg transition-shadow duration-300">
+                <span class="absolute top-4 right-4 bg-primary-teal text-white text-[10px] uppercase font-bold px-2 py-1 rounded-full">Global</span>
+                <div class="flex gap-1 text-gold-accent mb-6">
+                  ${starsHtml}
+                </div>
+                <p class="text-gray-700 italic leading-relaxed mb-8 relative z-10">"${review.text}"</p>
+                <div class="flex items-center gap-4 mt-auto">
+                  <img src="${review.dp}" class="w-12 h-12 rounded-full border-2 border-primary-teal object-cover">
+                  <div>
+                    <h5 class="font-bold text-dark-text">${review.name}</h5>
+                    <p class="text-sm text-gray-500">Verified Client</p>
+                  </div>
+                </div>
+              </div>
+            `;
+            // Add after the hardcoded ones but before they loop
+            track.insertAdjacentHTML('beforeend', html);
+        });
+      }
+    }
+  } catch (err) {
+    console.error("Failed to load global reviews");
+  }
+}
+loadGlobalReviews();
+
+</script>
+</body>
+</html>
