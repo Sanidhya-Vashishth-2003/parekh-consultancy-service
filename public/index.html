@@ -2815,12 +2815,13 @@ document.getElementById('contact-form').addEventListener('submit', async functio
   submitBtn.classList.add('opacity-70');
 
   const payload = {
-    name: document.getElementById('name-input').value,
-    email: document.getElementById('email-input').value,
-    phone: document.getElementById('phone-input').value,
-    service: document.getElementById('service-select').value,
-    message: document.getElementById('message-input').value,
-    _subject: "New Lead from Parekh Consultancy Website!"
+    "Client Name": document.getElementById('name-input').value,
+    "Email Address": document.getElementById('email-input').value,
+    "Phone Number": document.getElementById('phone-input').value,
+    "Requested Service": document.getElementById('service-select').value,
+    "Message": document.getElementById('message-input').value,
+    _subject: "New Lead from Parekh Consultancy Website!",
+    _template: "box"
   };
 
   try {
