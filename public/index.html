@@ -236,6 +236,11 @@
   .reveal.active, .reveal-left.active, .reveal-right.active, .reveal-scale.active {
     will-change: auto;
   }
+  
+  /* Advanced 3D Effects */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
 
   /* ===== HERO ===== */
   .hero-bg-gradient {
@@ -646,7 +651,7 @@
     <h2 class="font-headline text-3xl md:text-4xl font-bold text-dark-text mt-2">Our Services</h2>
     <div class="w-20 h-1 bg-gradient-to-r from-primary-teal to-gold-accent mx-auto mt-4 rounded-full"></div>
   </div>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-1000 stagger-children">
     <!-- GST Registration -->
     <div class="service-card bg-white p-8 rounded-xl shadow-sm border-l-4 border-primary-teal flex flex-col h-full reveal">
       <div class="w-14 h-14 bg-primary-teal/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary-teal transition-colors">
@@ -754,7 +759,7 @@
     <h2 class="font-headline text-3xl md:text-4xl font-bold text-dark-text leading-tight">Why Choose Us</h2>
     <div class="w-20 h-1 bg-gradient-to-r from-primary-teal to-gold-accent mx-auto mt-4 rounded-full"></div>
   </div>
-  <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 stagger-children">
+  <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 perspective-1000 stagger-children">
     <div class="feature-card glass-card p-8 rounded-xl shadow-sm hover:shadow-xl border border-white/50 group reveal">
       <div class="w-14 h-14 bg-primary-teal/5 rounded-lg flex items-center justify-center text-primary-teal mb-6 group-hover:bg-primary-teal group-hover:text-white transition-colors duration-300">
         <span class="material-symbols-outlined text-3xl">groups</span>
@@ -802,7 +807,7 @@
     </div>
   </div>
   <div class="relative overflow-hidden reveal">
-    <div class="flex transition-transform duration-700 ease-in-out gap-8" id="testimonial-track">
+    <div class="flex transition-transform duration-700 ease-in-out gap-8 perspective-1000" id="testimonial-track">
       <!-- Testimonial 1 -->
       <div class="min-w-full md:min-w-[calc(50%-16px)] lg:min-w-[calc(33.33%-21.33px)] bg-light-gray p-8 rounded-xl border border-gray-100 relative group hover:shadow-lg transition-shadow duration-300">
         <span class="material-symbols-outlined text-6xl text-gold-accent/20 absolute top-4 right-4" style="font-variation-settings: 'FILL' 1;">format_quote</span>
@@ -2263,6 +2268,164 @@ async function loadGlobalReviews() {
   }
 }
 loadGlobalReviews();
+// -----------------------------------------------------------------------------
+// ADVANCED ANIME.JS UI ANIMATIONS
+// -----------------------------------------------------------------------------
+
+// 1. Interactive 3D Background Particles
+function initParticles() {
+  const particleContainer = document.createElement('div');
+  particleContainer.id = 'bg-particles';
+  particleContainer.className = 'fixed inset-0 pointer-events-none z-[-1] overflow-hidden';
+  document.body.appendChild(particleContainer);
+
+  const numParticles = 40;
+  const colors = ['#0d6e6e', '#c8a84e', '#0a4f4f', '#e8d082'];
+  
+  for (let i = 0; i < numParticles; i++) {
+    const p = document.createElement('div');
+    const size = Math.random() * 8 + 4; // 4px to 12px
+    p.style.width = `${size}px`;
+    p.style.height = `${size}px`;
+    p.style.position = 'absolute';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.opacity = Math.random() * 0.3 + 0.1;
+    
+    // Mix of squares, circles, and diamonds
+    const shapeType = Math.random();
+    if (shapeType < 0.33) {
+      p.style.borderRadius = '50%'; // Circle
+    } else if (shapeType < 0.66) {
+      p.style.transform = 'rotate(45deg)'; // Diamond
+    }
+    
+    p.style.left = `${Math.random() * 100}vw`;
+    p.style.top = `${Math.random() * 100}vh`;
+    
+    particleContainer.appendChild(p);
+
+    // Continuous Anime.js float animation
+    anime({
+      targets: p,
+      translateX: () => anime.random(-150, 150),
+      translateY: () => anime.random(-150, 150),
+      rotate: () => anime.random(0, 360),
+      scale: () => anime.random(0.5, 1.5),
+      opacity: [p.style.opacity, Math.random() * 0.4],
+      duration: () => anime.random(8000, 15000),
+      easing: 'easeInOutQuad',
+      direction: 'alternate',
+      loop: true
+    });
+  }
+
+  // Mouse move parallax
+  document.addEventListener('mousemove', (e) => {
+    const mouseX = (e.clientX / window.innerWidth) - 0.5;
+    const mouseY = (e.clientY / window.innerHeight) - 0.5;
+    
+    anime({
+      targets: '#bg-particles div',
+      translateX: (el, i) => (mouseX * (i % 5 + 1) * 30),
+      translateY: (el, i) => (mouseY * (i % 5 + 1) * 30),
+      duration: 1000,
+      easing: 'easeOutExpo'
+    });
+  });
+}
+
+// 2. Staggered Text Reveals (for Hero Heading)
+function initStaggeredText() {
+  const heroHeading = document.querySelector('#hero h1');
+  if (heroHeading) {
+    const text = heroHeading.innerHTML;
+    // Basic word wrap
+    const words = text.split(' ').map(word => {
+      return `<span class="inline-block relative opacity-0 transform translate-y-8">${word}</span>`;
+    }).join(' ');
+    heroHeading.innerHTML = words;
+
+    setTimeout(() => {
+      anime({
+        targets: '#hero h1 span',
+        opacity: [0, 1],
+        translateY: [40, 0],
+        rotateX: [-45, 0],
+        duration: 1200,
+        delay: anime.stagger(150, {start: 500}),
+        easing: 'easeOutElastic(1, .6)'
+      });
+    }, 3500); // Wait for intro overlay to finish
+  }
+}
+
+// 3. Magnetic Buttons & 3D Hover Effects
+function initInteractiveElements() {
+  // Magnetic Buttons
+  const buttons = document.querySelectorAll('button, .cursor-pointer, a.bg-primary-teal');
+  buttons.forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      
+      anime({
+        targets: btn,
+        translateX: x * 0.2,
+        translateY: y * 0.2,
+        duration: 100,
+        easing: 'easeOutQuad'
+      });
+    });
+    
+    btn.addEventListener('mouseleave', () => {
+      anime({
+        targets: btn,
+        translateX: 0,
+        translateY: 0,
+        duration: 500,
+        easing: 'easeOutElastic(1, .5)'
+      });
+    });
+  });
+
+  // 3D Card Hover
+  const cards = document.querySelectorAll('.group.hover\\:shadow-lg, .min-w-full.md\\:min-w-\\[calc\\(50\\%-16px\\)\\]');
+  cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      
+      anime({
+        targets: card,
+        rotateY: (x / rect.width) * 15, // Max 15 deg tilt
+        rotateX: -(y / rect.height) * 15,
+        translateZ: 20,
+        duration: 100,
+        easing: 'easeOutQuad'
+      });
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      anime({
+        targets: card,
+        rotateY: 0,
+        rotateX: 0,
+        translateZ: 0,
+        duration: 600,
+        easing: 'easeOutElastic(1, .6)'
+      });
+    });
+  });
+}
+
+// Initialize Advanced Animations
+document.addEventListener('DOMContentLoaded', () => {
+  initParticles();
+  initStaggeredText();
+  initInteractiveElements();
+});
 
 </script>
 </body>
