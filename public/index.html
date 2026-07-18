@@ -1378,10 +1378,19 @@
         </div>
         <button onclick="toggleChat()" class="hover:text-gray-200"><span class="material-symbols-outlined text-sm">close</span></button>
       </div>
-      <div id="chat-messages" class="flex-1 p-4 overflow-y-auto bg-gray-50 flex flex-col gap-3">
+      <div id="chat-messages" class="flex-1 p-4 overflow-y-auto bg-gray-50 flex flex-col gap-4">
         <!-- Initial Message -->
-        <div class="bg-white p-3 rounded-lg rounded-tl-none text-sm text-gray-700 shadow-sm self-start max-w-[85%]">
-          Hi! I'm your AI Tax Assistant. Ask me anything about GST, ITR, or our services!
+        <div class="flex flex-col gap-1 w-full">
+          <div class="bg-white p-3.5 rounded-2xl rounded-tl-sm text-sm text-gray-700 shadow-sm self-start max-w-[85%] border border-gray-100">
+            Hi! I'm your virtual Tax Assistant. 👋<br>How can I help you today?
+          </div>
+          <span class="text-[10px] text-gray-400 ml-1" id="bot-time-init"></span>
+          <!-- Quick Replies -->
+          <div class="flex flex-wrap gap-2 mt-2" id="initial-quick-replies">
+            <button onclick="document.getElementById('chat-input').value='GST Registration'; sendChatMessage();" class="px-3 py-1.5 bg-primary-teal/10 text-primary-teal border border-primary-teal/20 rounded-full text-xs font-semibold hover:bg-primary-teal hover:text-white transition-colors">GST Registration</button>
+            <button onclick="document.getElementById('chat-input').value='Income Tax Filing'; sendChatMessage();" class="px-3 py-1.5 bg-primary-teal/10 text-primary-teal border border-primary-teal/20 rounded-full text-xs font-semibold hover:bg-primary-teal hover:text-white transition-colors">Income Tax Filing</button>
+            <button onclick="document.getElementById('chat-input').value='Pricing & Fees'; sendChatMessage();" class="px-3 py-1.5 bg-primary-teal/10 text-primary-teal border border-primary-teal/20 rounded-full text-xs font-semibold hover:bg-primary-teal hover:text-white transition-colors">Pricing & Fees</button>
+          </div>
         </div>
       </div>
       <div class="p-3 bg-white border-t border-gray-200 flex gap-2">
@@ -2859,6 +2868,10 @@ document.getElementById('contact-form').addEventListener('submit', async functio
 function toggleChat() {
   const chatWidget = document.getElementById('chat-widget');
   chatWidget.classList.toggle('open');
+  const initTime = document.getElementById('bot-time-init');
+  if (initTime && !initTime.innerText) {
+    initTime.innerText = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  }
 }
 
 function handleChatKey(e) {
@@ -2871,11 +2884,19 @@ function sendChatMessage() {
   if (!text) return;
   
   const messagesDiv = document.getElementById('chat-messages');
+  const timeStr = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  
+  // Hide initial quick replies if they exist
+  const initReplies = document.getElementById('initial-quick-replies');
+  if (initReplies) initReplies.style.display = 'none';
   
   // Append user message
   messagesDiv.innerHTML += `
-    <div class="bg-primary-teal text-white p-3 rounded-lg rounded-tr-none text-sm shadow-sm self-end max-w-[85%]">
-      ${text}
+    <div class="flex flex-col gap-1 w-full items-end mt-2">
+      <div class="bg-primary-teal text-white p-3.5 rounded-2xl rounded-tr-sm text-sm shadow-sm max-w-[85%]">
+        ${text}
+      </div>
+      <span class="text-[10px] text-gray-400 mr-1">${timeStr}</span>
     </div>
   `;
   input.value = '';
@@ -2884,38 +2905,65 @@ function sendChatMessage() {
   // Show typing indicator
   const typingId = 'typing-' + Date.now();
   messagesDiv.innerHTML += `
-    <div id="${typingId}" class="bg-white p-3 rounded-lg rounded-tl-none text-sm text-gray-500 shadow-sm self-start max-w-[85%] flex gap-1">
-      <span class="animate-bounce">•</span><span class="animate-bounce" style="animation-delay: 0.1s">•</span><span class="animate-bounce" style="animation-delay: 0.2s">•</span>
+    <div id="${typingId}" class="flex flex-col gap-1 w-full mt-2">
+      <div class="bg-white p-3.5 rounded-2xl rounded-tl-sm text-sm text-gray-500 shadow-sm self-start max-w-[85%] border border-gray-100 flex gap-1.5 items-center h-[42px]">
+        <div class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></div>
+        <div class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.15s"></div>
+        <div class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
+      </div>
     </div>
   `;
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
-  // Simple rule-based bot
+  // Advanced Interactive Bot Logic
   setTimeout(() => {
     document.getElementById(typingId).remove();
-    let reply = "I'm a simple bot! For detailed advice, please book a consultation.";
+    let reply = "";
+    let quickReplies = "";
     const lowerText = text.toLowerCase();
     
     if (lowerText.includes('gst')) {
-      reply = "GST registration typically requires your PAN, Aadhar, Business Proof, and Bank details. We can process it within 3-5 working days.";
-    } else if (lowerText.includes('itr') || lowerText.includes('income tax')) {
-      reply = "The deadline for ITR filing is usually July 31st for individuals. Have you kept your Form 16 and investment proofs ready?";
-    } else if (lowerText.includes('fee') || lowerText.includes('cost') || lowerText.includes('price')) {
-      reply = "Our consulting fees start from ₹1,499 depending on the complexity of your returns. Book a consultation for a tailored quote!";
-    } else if (lowerText.includes('book') || lowerText.includes('appointment')) {
-      reply = "You can book a consultation easily! Just click the 'Get Consultation' button at the top of the page.";
-    } else if (lowerText.includes('hi') || lowerText.includes('hello')) {
-      reply = "Hello! How can I assist you with your finances today?";
+      reply = "<strong>GST Registration & Filing</strong><br>We offer end-to-end GST services. Registration requires PAN, Aadhar, Business Proof, and Bank Details. Filing starts from ₹1,000/month.";
+      quickReplies = `
+        <button onclick="document.getElementById('chat-input').value='Book GST Consultation'; sendChatMessage();" class="px-3 py-1.5 bg-primary-teal/10 text-primary-teal border border-primary-teal/20 rounded-full text-xs font-semibold hover:bg-primary-teal hover:text-white transition-colors">Book Consultation</button>
+      `;
+    } else if (lowerText.includes('itr') || lowerText.includes('income tax') || lowerText.includes('filing')) {
+      reply = "<strong>Income Tax Returns (ITR)</strong><br>We file ITR-1 to ITR-4 for individuals and businesses. Keep your Form 16, AIS/TIS, and investment proofs ready. Would you like a quote?";
+      quickReplies = `
+        <button onclick="document.getElementById('chat-input').value='Get a Quote for ITR'; sendChatMessage();" class="px-3 py-1.5 bg-primary-teal/10 text-primary-teal border border-primary-teal/20 rounded-full text-xs font-semibold hover:bg-primary-teal hover:text-white transition-colors">Get a Quote</button>
+      `;
+    } else if (lowerText.includes('fee') || lowerText.includes('cost') || lowerText.includes('price') || lowerText.includes('quote')) {
+      reply = "Our professional fees are highly competitive:<br>• ITR Filing: Starts at ₹1,499<br>• GST Registration: ₹2,499<br>• Bookkeeping: Custom pricing<br><br>Prices vary based on complexity.";
+    } else if (lowerText.includes('book') || lowerText.includes('appointment') || lowerText.includes('consult')) {
+      reply = "Excellent! You can book a consultation directly from our website. Just close this chat and click the <strong>'Get Consultation'</strong> button at the top right of the screen.";
+    } else if (lowerText.includes('hi') || lowerText.includes('hello') || lowerText.includes('hey')) {
+      reply = "Hello there! 👋 How can I help you with your financial and tax compliance today?";
+    } else {
+      reply = "I'm a virtual assistant. For detailed advice, I recommend speaking directly with our expert CAs. Would you like to leave a message?";
+      quickReplies = `
+        <button onclick="document.getElementById('chat-input').value='Yes, I want to contact human'; sendChatMessage();" class="px-3 py-1.5 bg-primary-teal/10 text-primary-teal border border-primary-teal/20 rounded-full text-xs font-semibold hover:bg-primary-teal hover:text-white transition-colors">Contact Human</button>
+      `;
+    }
+    
+    // Check for specific "Contact human" intent
+    if (lowerText.includes('contact human') || lowerText.includes('talk to human')) {
+      reply = "You can reach us at <strong>+91 9934593000</strong> or drop an email to <strong>info@parekhconsultancy.com</strong>. You can also use the contact form at the bottom of this page!";
+      quickReplies = "";
     }
     
     messagesDiv.innerHTML += `
-      <div class="bg-white p-3 rounded-lg rounded-tl-none text-sm text-gray-700 shadow-sm self-start max-w-[85%]">
-        ${reply}
+      <div class="flex flex-col gap-1 w-full mt-2">
+        <div class="bg-white p-3.5 rounded-2xl rounded-tl-sm text-sm text-gray-700 shadow-sm self-start max-w-[85%] border border-gray-100">
+          ${reply}
+        </div>
+        <span class="text-[10px] text-gray-400 ml-1">${timeStr}</span>
+        ${quickReplies ? `<div class="flex flex-wrap gap-2 mt-1">${quickReplies}</div>` : ''}
       </div>
     `;
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
-  }, 1000);
+  }, 1200);
 }
+
 
 // -----------------------------------------------------------------------------
 // TAX CALCULATOR
