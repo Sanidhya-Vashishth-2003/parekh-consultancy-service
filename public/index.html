@@ -1808,7 +1808,8 @@ function openAuthModal() {
     targets: modal,
     opacity: [0, 1],
     scale: [0.85, 1],
-    translateY: [40, 0],
+    translateX: ['-50%', '-50%'],
+    translateY: ['calc(-50% + 40px)', '-50%'],
     duration: 600,
     easing: 'easeOutBack'
   });
@@ -1859,7 +1860,8 @@ function openProfileModal() {
     targets: modal,
     opacity: [0, 1],
     scale: [0.85, 1],
-    translateY: [40, 0],
+    translateX: ['-50%', '-50%'],
+    translateY: ['calc(-50% + 40px)', '-50%'],
     duration: 600,
     easing: 'easeOutBack'
   });
@@ -1880,7 +1882,8 @@ function openReviewModal() {
     targets: modal,
     opacity: [0, 1],
     scale: [0.85, 1],
-    translateY: [40, 0],
+    translateX: ['-50%', '-50%'],
+    translateY: ['calc(-50% + 40px)', '-50%'],
     duration: 600,
     easing: 'easeOutBack'
   });
@@ -1902,7 +1905,8 @@ function closeAllModals() {
         targets: modal,
         opacity: [1, 0],
         scale: [1, 0.85],
-        translateY: [0, 30],
+        translateX: ['-50%', '-50%'],
+        translateY: ['-50%', 'calc(-50% + 30px)'],
         duration: 400,
         easing: 'easeInQuart',
         complete: () => {
