@@ -45,6 +45,30 @@ const db = new sqlite3.Database('./database.sqlite', (err) => {
         )`, (err) => {
             if(err) console.error("Error creating reviews table", err);
         });
+
+        // Create Appointments Table
+        db.run(`CREATE TABLE IF NOT EXISTS appointments (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT NOT NULL,
+            phone TEXT,
+            date TEXT NOT NULL,
+            time TEXT NOT NULL,
+            service TEXT NOT NULL,
+            message TEXT,
+            status TEXT DEFAULT 'Pending',
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )`);
+
+        // Create Blogs Table
+        db.run(`CREATE TABLE IF NOT EXISTS blogs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            excerpt TEXT NOT NULL,
+            content TEXT NOT NULL,
+            image TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )`);
     }
 });
 
@@ -89,7 +113,8 @@ app.post('/api/login', (req, res) => {
         const isMatch = await bcrypt.compare(password, row.password);
         if (!isMatch) return res.status(400).json({ error: "Invalid email or password" });
 
-        const user = { id: row.id, name: row.name, email: row.email, dp: row.dp };
+        const isAdmin = email === 'parekh@consultancy.com';
+        const user = { id: row.id, name: row.name, email: row.email, dp: row.dp, isAdmin };
         const token = jwt.sign(user, SECRET_KEY);
         res.json({ message: "Login successful", user, token });
     });
@@ -137,6 +162,76 @@ app.get('/api/reviews', (req, res) => {
     db.all(`SELECT * FROM reviews ORDER BY created_at DESC`, [], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(rows);
+    });
+});
+
+// BOOK APPOINTMENT
+app.post('/api/book', (req, res) => {
+    const { name, email, phone, date, time, service, message } = req.body;
+    if (!name || !email || !date || !time || !service) return res.status(400).json({ error: "Missing required fields" });
+
+    const sql = `INSERT INTO appointments (name, email, phone, date, time, service, message) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+    db.run(sql, [name, email, phone, date, time, service, message], function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ message: "Appointment booked successfully!", id: this.lastID });
+    });
+});
+
+// GET BLOGS
+app.get('/api/blogs', (req, res) => {
+    db.all(`SELECT * FROM blogs ORDER BY created_at DESC`, [], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows);
+    });
+});
+
+// --- ADMIN ENDPOINTS ---
+
+// Middleware to verify Admin
+const authenticateAdmin = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) return res.status(401).json({ error: "No token provided" });
+    const token = authHeader.split(' ')[1];
+    
+    jwt.verify(token, SECRET_KEY, (err, decoded) => {
+        if (err || !decoded.isAdmin) return res.status(403).json({ error: "Unauthorized. Admin only." });
+        req.user = decoded;
+        next();
+    });
+};
+
+app.get('/api/admin/stats', authenticateAdmin, (req, res) => {
+    db.serialize(() => {
+        let stats = {};
+        db.get("SELECT COUNT(*) as count FROM users", [], (err, row) => { stats.users = row.count; });
+        db.get("SELECT COUNT(*) as count FROM appointments", [], (err, row) => { stats.appointments = row.count; });
+        db.get("SELECT COUNT(*) as count FROM reviews", [], (err, row) => { 
+            stats.reviews = row.count; 
+            res.json(stats);
+        });
+    });
+});
+
+app.get('/api/admin/appointments', authenticateAdmin, (req, res) => {
+    db.all("SELECT * FROM appointments ORDER BY created_at DESC", [], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows);
+    });
+});
+
+app.get('/api/admin/users', authenticateAdmin, (req, res) => {
+    db.all("SELECT id, name, email, dp FROM users ORDER BY id DESC", [], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows);
+    });
+});
+
+app.post('/api/admin/blogs', authenticateAdmin, (req, res) => {
+    const { title, excerpt, content, image } = req.body;
+    db.run(`INSERT INTO blogs (title, excerpt, content, image) VALUES (?, ?, ?, ?)`, 
+    [title, excerpt, content, image], function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ message: "Blog created", id: this.lastID });
     });
 });
 
