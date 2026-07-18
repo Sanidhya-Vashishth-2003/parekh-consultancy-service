@@ -2714,6 +2714,14 @@ async function loadBlogs() {
       newCards.forEach(card => blogObserver.observe(card));
     }, 100);
     
+    // Auto-scroll logic
+    const autoScrollSpeed = 3500;
+    container.addEventListener('mouseenter', stopBlogAutoScroll);
+    container.addEventListener('mouseleave', startBlogAutoScroll);
+    container.addEventListener('touchstart', stopBlogAutoScroll, {passive: true});
+    container.addEventListener('touchend', startBlogAutoScroll, {passive: true});
+    startBlogAutoScroll();
+    
   } catch(e) {
     console.error("Failed to load news:", e);
     noMsg.innerHTML = "Unable to fetch live news at the moment.";
@@ -2726,7 +2734,25 @@ loadBlogs();
 function scrollBlog(dir) {
   const container = document.getElementById('blog-container');
   const scrollAmount = window.innerWidth < 640 ? window.innerWidth * 0.85 : 360 + 24; // Card width + gap
-  container.scrollBy({ left: dir * scrollAmount, behavior: 'smooth' });
+  
+  if (dir === 1 && container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
+    // Loop back to start
+    container.scrollTo({ left: 0, behavior: 'smooth' });
+  } else if (dir === -1 && container.scrollLeft <= 10) {
+    // Loop to end
+    container.scrollTo({ left: container.scrollWidth, behavior: 'smooth' });
+  } else {
+    container.scrollBy({ left: dir * scrollAmount, behavior: 'smooth' });
+  }
+}
+
+let blogAutoScrollInterval;
+function startBlogAutoScroll() {
+  stopBlogAutoScroll(); // ensure no duplicates
+  blogAutoScrollInterval = setInterval(() => scrollBlog(1), 3500);
+}
+function stopBlogAutoScroll() {
+  clearInterval(blogAutoScrollInterval);
 }
 
 // -----------------------------------------------------------------------------
