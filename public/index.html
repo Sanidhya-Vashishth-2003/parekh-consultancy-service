@@ -1018,11 +1018,29 @@
     <div class="w-20 h-1 bg-gradient-to-r from-primary-teal to-gold-accent mx-auto mt-4 rounded-full"></div>
   </div>
   
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="blog-container">
-    <!-- Blogs will be injected here via JS -->
-    <div class="text-center col-span-full py-10 text-gray-500 hidden" id="no-blog-msg">
-      No updates available right now. Check back later!
+  <div class="relative w-full overflow-hidden">
+    <!-- Left Gradient Fade -->
+    <div class="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+    
+    <div class="flex overflow-x-auto gap-6 pb-8 pt-4 snap-x snap-mandatory hide-scroll" id="blog-container" style="-ms-overflow-style: none; scrollbar-width: none;">
+      <!-- Blogs will be injected here via JS -->
+      <div class="w-full text-center py-10 text-gray-500 hidden" id="no-blog-msg">
+        <span class="material-symbols-outlined text-4xl mb-2 animate-spin text-primary-teal">refresh</span>
+        <p>Fetching latest tax news...</p>
+      </div>
     </div>
+
+    <!-- Right Gradient Fade -->
+    <div class="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+  </div>
+  
+  <div class="flex justify-center mt-4 gap-4 hidden" id="blog-nav-btns">
+    <button onclick="scrollBlog(-1)" class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-primary-teal hover:bg-primary-teal hover:text-white transition-colors shadow-sm">
+      <span class="material-symbols-outlined">chevron_left</span>
+    </button>
+    <button onclick="scrollBlog(1)" class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-primary-teal hover:bg-primary-teal hover:text-white transition-colors shadow-sm">
+      <span class="material-symbols-outlined">chevron_right</span>
+    </button>
   </div>
 </div>
 </section>
@@ -2595,51 +2613,101 @@ async function loadGlobalReviews() {
 }
 loadGlobalReviews();
 // -----------------------------------------------------------------------------
-// BLOG LOGIC
+// LIVE TAX NEWS LOGIC (RSS via AllOrigins Proxy)
 // -----------------------------------------------------------------------------
 async function loadBlogs() {
   const container = document.getElementById('blog-container');
   const noMsg = document.getElementById('no-blog-msg');
+  const navBtns = document.getElementById('blog-nav-btns');
+  
+  // Show loading state
+  container.innerHTML = '';
+  container.appendChild(noMsg);
+  noMsg.classList.remove('hidden');
+
   try {
-    const res = await fetch('/api/blogs');
-    const blogs = await res.json();
+    // We use a free open proxy for NewsAPI to get Indian Business news
+    const res = await fetch('https://saurav.tech/NewsAPI/top-headlines/category/business/in.json');
     
-    // Clear skeletons
-    container.innerHTML = '';
+    if (!res.ok) throw new Error('Network response was not ok');
     
-    if (blogs.length === 0) {
-      container.appendChild(noMsg);
-      noMsg.classList.remove('hidden');
+    const data = await res.json();
+    const articles = data.articles;
+    
+    if (!articles || articles.length === 0) {
+      noMsg.innerHTML = "No recent tax news found.";
       return;
     }
     
-    blogs.forEach((blog, idx) => {
-      const dateStr = new Date(blog.created_at).toLocaleDateString('en-IN', {
-        day: 'numeric', month: 'short', year: 'numeric'
-      });
+    // Clear loading msg
+    container.innerHTML = '';
+    navBtns.classList.remove('hidden');
+    
+    let count = 0;
+    articles.forEach((article, idx) => {
+      // Filter out removed or empty articles
+      if (article.title === "[Removed]" || !article.title) return;
+      if (count >= 8) return; // Limit to top 8 news items
+      count++;
       
-      const img = blog.image ? blog.image : 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=800&auto=format&fit=crop';
+      const title = article.title || "Tax Update";
+      const link = article.url || "#";
+      const pubDate = article.publishedAt || "";
+      
+      // Parse date
+      let dateStr = "Recently";
+      if (pubDate) {
+        dateStr = new Date(pubDate).toLocaleDateString('en-IN', {
+          day: 'numeric', month: 'short', year: 'numeric'
+        });
+      }
+      
+      // Extract publisher from source tag if available
+      const source = article.source?.name || "Financial News";
+      
+      // Abstract image based on index, or use article image if available
+      const fallbackImages = [
+        'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=600&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&auto=format&fit=crop'
+      ];
+      const img = article.urlToImage || fallbackImages[idx % fallbackImages.length];
 
       container.innerHTML += `
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 reveal delay-${(idx%3)*100}">
-          <div class="h-48 overflow-hidden">
-            <img src="${img}" alt="Blog Image" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+        <div class="min-w-[85vw] sm:min-w-[320px] md:min-w-[360px] snap-center bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 reveal delay-${(idx%3)*100} flex flex-col">
+          <div class="h-44 overflow-hidden relative">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 pointer-events-none"></div>
+            <img src="${img}" alt="Tax News" class="w-full h-full object-cover transition-transform duration-700 hover:scale-110">
+            <span class="absolute bottom-3 left-4 z-20 text-[10px] font-bold text-white bg-gold-accent px-2 py-1 rounded-sm uppercase tracking-wider">${source}</span>
           </div>
-          <div class="p-6">
-            <span class="text-xs font-bold text-gold-accent uppercase tracking-wider mb-2 block">${dateStr}</span>
-            <h4 class="text-xl font-headline font-bold text-dark-text mb-3 line-clamp-2">${blog.title}</h4>
-            <p class="text-gray-600 text-sm mb-4 line-clamp-3">${blog.excerpt}</p>
-            <button class="text-primary-teal font-bold text-sm flex items-center gap-1 hover:text-dark-emerald transition-colors" onclick="alert('Full blog feature coming soon!')">Read More <span class="material-symbols-outlined text-xs">arrow_forward</span></button>
+          <div class="p-6 flex-1 flex flex-col">
+            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 block flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px]">schedule</span> ${dateStr}
+            </span>
+            <h4 class="text-lg font-headline font-bold text-dark-text mb-3 line-clamp-3 leading-snug hover:text-primary-teal transition-colors flex-1">${title}</h4>
+            <a href="${link}" target="_blank" rel="noopener noreferrer" class="text-primary-teal font-bold text-sm flex items-center gap-1 hover:text-dark-emerald transition-colors w-max mt-4">
+              Read Full Story <span class="material-symbols-outlined text-sm">open_in_new</span>
+            </a>
           </div>
         </div>
       `;
     });
     
   } catch(e) {
-    console.error("Failed to load blogs:", e);
+    console.error("Failed to load news:", e);
+    noMsg.innerHTML = "Unable to fetch live news at the moment.";
+    noMsg.classList.remove('hidden');
+    navBtns.classList.add('hidden');
   }
 }
 loadBlogs();
+
+function scrollBlog(dir) {
+  const container = document.getElementById('blog-container');
+  const scrollAmount = window.innerWidth < 640 ? window.innerWidth * 0.85 : 360 + 24; // Card width + gap
+  container.scrollBy({ left: dir * scrollAmount, behavior: 'smooth' });
+}
 
 // -----------------------------------------------------------------------------
 // CHATBOT LOGIC
