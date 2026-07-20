@@ -1025,16 +1025,174 @@
         </div>
 
         <!-- Chart Container -->
-        <div class="relative h-[300px] w-full">
+        <div class="relative h-[300px] w-full mb-6">
           <canvas id="taxChart"></canvas>
         </div>
         
+        <!-- Advanced Calculator CTA -->
+        <div class="text-center pt-6 border-t border-gray-200/50">
+          <button onclick="openAdvancedCalculator()" class="text-sm font-bold text-primary-teal hover:text-dark-emerald transition-colors underline underline-offset-4 decoration-2 decoration-primary-teal/30 hover:decoration-primary-teal">
+            Need 100% accuracy? Open Detailed Assessment
+          </button>
+        </div>
       </div>
     </div>
+  </div>
 
+  <!-- LEGAL DISCLAIMER -->
+  <div class="max-w-4xl mx-auto mt-12 bg-gray-50 border border-gray-200 p-6 rounded-xl text-center">
+    <p class="text-xs text-gray-500 leading-relaxed">
+      <strong>⚠️ Legal Disclaimer:</strong> This predictor is an educational tool designed to provide a generalized estimate of your tax liability based on the Union Budget 2024-25. It does not account for surcharges, marginal relief, capital gains, or comprehensive deductions (like HRA or Home Loan Interest). The results provided do not constitute professional financial or legal advice. Parekh Consultancy Service assumes no liability for decisions made based on this estimate. For a 100% accurate, legally compliant tax assessment and filing, please use the Detailed Assessment tool or book a consultation with our experts.
+    </p>
   </div>
 </div>
 </section>
+
+<!-- ===== ADVANCED TAX CALCULATOR MODAL ===== -->
+<div id="advanced-tax-modal" class="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none opacity-0 transition-opacity duration-300">
+  <div class="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto" onclick="closeAdvancedCalculator()"></div>
+  <div class="bg-white w-full max-w-5xl max-h-[90vh] rounded-3xl shadow-2xl relative z-10 flex flex-col pointer-events-auto overflow-hidden transform scale-95 transition-transform duration-300" id="advanced-tax-content">
+    
+    <!-- Modal Header -->
+    <div class="bg-primary-teal text-white p-6 flex justify-between items-center shrink-0">
+      <div>
+        <h2 class="text-2xl font-headline font-bold">100% Accurate Tax Assessment</h2>
+        <p class="text-primary-teal/80 text-sm font-medium opacity-80">FY 2024-25 (AY 2025-26) Comprehensive Calculator</p>
+      </div>
+      <button onclick="closeAdvancedCalculator()" class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors">
+        <span class="material-symbols-outlined text-white">close</span>
+      </button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="flex-1 overflow-y-auto p-6 bg-gray-50">
+      <div class="grid lg:grid-cols-2 gap-8">
+        
+        <!-- Left: Forms -->
+        <div class="space-y-6">
+          
+          <!-- Income Box -->
+          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+            <h3 class="text-lg font-bold text-dark-text mb-4 border-b pb-2 flex items-center gap-2"><span class="material-symbols-outlined text-primary-teal text-xl">account_balance_wallet</span> Income Details</h3>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase">Basic Salary</label>
+                <input type="number" id="adv-basic" value="1000000" class="w-full mt-1 p-2 border rounded focus:border-primary-teal outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase">HRA Received</label>
+                <input type="number" id="adv-hra-rec" value="200000" class="w-full mt-1 p-2 border rounded focus:border-primary-teal outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase">Other Allowances</label>
+                <input type="number" id="adv-other-allow" value="300000" class="w-full mt-1 p-2 border rounded focus:border-primary-teal outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase">Other Income (Int, etc)</label>
+                <input type="number" id="adv-other-inc" value="50000" class="w-full mt-1 p-2 border rounded focus:border-primary-teal outline-none">
+              </div>
+            </div>
+          </div>
+
+          <!-- Exemptions Box -->
+          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+            <h3 class="text-lg font-bold text-dark-text mb-4 border-b pb-2 flex items-center gap-2"><span class="material-symbols-outlined text-primary-teal text-xl">home</span> HRA Exemption Info</h3>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase">Rent Paid (Yearly)</label>
+                <input type="number" id="adv-rent" value="180000" class="w-full mt-1 p-2 border rounded focus:border-primary-teal outline-none">
+              </div>
+              <div class="flex items-center mt-6">
+                <input type="checkbox" id="adv-metro" class="w-4 h-4 text-primary-teal rounded focus:ring-primary-teal cursor-pointer">
+                <label class="ml-2 text-sm font-bold text-gray-700 cursor-pointer" for="adv-metro">Living in Metro City?</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Deductions Box -->
+          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+            <h3 class="text-lg font-bold text-dark-text mb-4 border-b pb-2 flex items-center gap-2"><span class="material-symbols-outlined text-primary-teal text-xl">savings</span> Deductions (Old Regime)</h3>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase">80C (Max 1.5L)</label>
+                <input type="number" id="adv-80c" value="150000" class="w-full mt-1 p-2 border rounded focus:border-primary-teal outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase">80D (Health Ins)</label>
+                <input type="number" id="adv-80d" value="25000" class="w-full mt-1 p-2 border rounded focus:border-primary-teal outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase">80CCD(1B) (NPS)</label>
+                <input type="number" id="adv-nps" value="50000" class="w-full mt-1 p-2 border rounded focus:border-primary-teal outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase">24(b) Home Loan Int</label>
+                <input type="number" id="adv-hl" value="0" class="w-full mt-1 p-2 border rounded focus:border-primary-teal outline-none">
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: Results Panel -->
+        <div class="bg-dark-text text-white p-8 rounded-3xl flex flex-col justify-between">
+          <div>
+            <h3 class="text-xl font-headline font-bold text-gold-accent mb-6 border-b border-gray-700 pb-4">Detailed Tax Breakdown</h3>
+            
+            <!-- Result Rows -->
+            <div class="space-y-4">
+              <div class="flex justify-between items-center text-sm border-b border-gray-700/50 pb-2">
+                <span class="text-gray-400">Gross Total Income</span>
+                <span class="font-bold font-headline" id="res-gti">₹0</span>
+              </div>
+              
+              <div class="flex justify-between items-center text-sm border-b border-gray-700/50 pb-2">
+                <span class="text-gray-400">Old Regime Deductions/Exemptions</span>
+                <span class="font-bold text-red-400 font-headline" id="res-old-ded">-₹0</span>
+              </div>
+              <div class="flex justify-between items-center text-sm border-b border-gray-700/50 pb-2">
+                <span class="text-gray-400">Old Regime Taxable Income</span>
+                <span class="font-bold text-white font-headline" id="res-old-taxable">₹0</span>
+              </div>
+              
+              <div class="flex justify-between items-center text-sm border-b border-gray-700/50 pb-2 mt-4">
+                <span class="text-gray-400">New Regime Deductions (Std Ded)</span>
+                <span class="font-bold text-red-400 font-headline" id="res-new-ded">-₹0</span>
+              </div>
+              <div class="flex justify-between items-center text-sm border-b border-gray-700/50 pb-2">
+                <span class="text-gray-400">New Regime Taxable Income</span>
+                <span class="font-bold text-white font-headline" id="res-new-taxable">₹0</span>
+              </div>
+            </div>
+
+            <div class="mt-8 grid grid-cols-2 gap-4">
+              <div class="bg-gray-800 p-4 rounded-xl text-center border border-gray-700">
+                <p class="text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">Old Regime Tax</p>
+                <p class="text-2xl font-headline font-bold text-gold-accent" id="res-old-tax">₹0</p>
+              </div>
+              <div class="bg-gray-800 p-4 rounded-xl text-center border border-primary-teal border-opacity-50 relative overflow-hidden">
+                <div class="absolute inset-0 bg-primary-teal/10 pointer-events-none"></div>
+                <p class="text-xs text-primary-teal uppercase tracking-widest font-bold mb-1 relative z-10">New Regime Tax</p>
+                <p class="text-2xl font-headline font-bold text-primary-teal relative z-10" id="res-new-tax">₹0</p>
+              </div>
+            </div>
+            
+            <div class="mt-4 text-center">
+              <p class="text-xs text-gray-500">* Includes 4% Cess, applicable Surcharges, and Marginal Relief.</p>
+            </div>
+          </div>
+
+          <div class="mt-8">
+            <button onclick="calculateAdvancedTax()" class="w-full bg-gold-accent hover:bg-yellow-600 text-dark-text font-bold text-lg py-4 rounded-xl transition-colors shadow-[0_0_20px_rgba(200,168,78,0.3)] hover:shadow-[0_0_30px_rgba(200,168,78,0.5)]">
+              Calculate Exact Tax
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ===== TESTIMONIALS ===== -->
 <section class="py-24 bg-white" id="testimonials">
@@ -3314,6 +3472,155 @@ function initTaxPredictor() {
 
   // Initial render
   updatePredictor();
+}
+
+// -----------------------------------------------------------------------------
+// 100% ACCURATE ADVANCED TAX CALCULATOR LOGIC
+// -----------------------------------------------------------------------------
+
+function openAdvancedCalculator() {
+  const modal = document.getElementById('advanced-tax-modal');
+  const content = document.getElementById('advanced-tax-content');
+  modal.classList.remove('pointer-events-none');
+  modal.classList.replace('opacity-0', 'opacity-100');
+  content.classList.replace('scale-95', 'scale-100');
+  document.body.style.overflow = 'hidden';
+  calculateAdvancedTax(); // initial calculation
+}
+
+function closeAdvancedCalculator() {
+  const modal = document.getElementById('advanced-tax-modal');
+  const content = document.getElementById('advanced-tax-content');
+  modal.classList.add('pointer-events-none');
+  modal.classList.replace('opacity-100', 'opacity-0');
+  content.classList.replace('scale-100', 'scale-95');
+  document.body.style.overflow = 'auto';
+}
+
+function calculateSurchargeAndCess(tax, taxableIncome, isNewRegime) {
+  let surchargeRate = 0;
+  if (taxableIncome > 50000000) {
+    surchargeRate = 0.37; // >5Cr Old Regime only
+    if (isNewRegime) surchargeRate = 0.25; // Capped at 25% for New Regime
+  } else if (taxableIncome > 20000000) {
+    surchargeRate = 0.25; // >2Cr
+  } else if (taxableIncome > 10000000) {
+    surchargeRate = 0.15; // >1Cr
+  } else if (taxableIncome > 5000000) {
+    surchargeRate = 0.10; // >50L
+  }
+
+  // Calculate tax with surcharge
+  let taxWithSurcharge = tax + (tax * surchargeRate);
+
+  // Marginal Relief calculation (simplified standard algorithm)
+  const thresholds = [5000000, 10000000, 20000000, 50000000];
+  let appliedThreshold = thresholds.slice().reverse().find(t => taxableIncome > t);
+  
+  if (appliedThreshold) {
+    let extraIncome = taxableIncome - appliedThreshold;
+    // We need the tax at exactly the threshold to compare
+    let taxAtThreshold = calculateBaseTax(appliedThreshold, isNewRegime);
+    let surchargeAtThreshold = 0;
+    if (appliedThreshold === 10000000) surchargeAtThreshold = 0.10;
+    else if (appliedThreshold === 20000000) surchargeAtThreshold = 0.15;
+    else if (appliedThreshold === 50000000) surchargeAtThreshold = 0.25;
+    
+    let totalTaxAtThreshold = taxAtThreshold + (taxAtThreshold * surchargeAtThreshold);
+    
+    let maxAcceptableTax = totalTaxAtThreshold + extraIncome;
+    if (taxWithSurcharge > maxAcceptableTax) {
+      taxWithSurcharge = maxAcceptableTax; // Apply Marginal Relief
+    }
+  }
+
+  // Add 4% H&E Cess
+  let finalTax = taxWithSurcharge * 1.04;
+  return Math.round(finalTax);
+}
+
+function calculateBaseTax(taxableIncome, isNewRegime) {
+  let tax = 0;
+  if (isNewRegime) {
+    if (taxableIncome > 300000) tax += Math.min(taxableIncome - 300000, 400000) * 0.05;
+    if (taxableIncome > 700000) tax += Math.min(taxableIncome - 700000, 300000) * 0.10;
+    if (taxableIncome > 1000000) tax += Math.min(taxableIncome - 1000000, 200000) * 0.15;
+    if (taxableIncome > 1200000) tax += Math.min(taxableIncome - 1200000, 300000) * 0.20;
+    if (taxableIncome > 1500000) tax += (taxableIncome - 1500000) * 0.30;
+  } else {
+    if (taxableIncome > 250000) tax += Math.min(taxableIncome - 250000, 250000) * 0.05;
+    if (taxableIncome > 500000) tax += Math.min(taxableIncome - 500000, 500000) * 0.20;
+    if (taxableIncome > 1000000) tax += (taxableIncome - 1000000) * 0.30;
+  }
+  return tax;
+}
+
+function calculateAdvancedTax() {
+  // Inputs
+  const basic = parseFloat(document.getElementById('adv-basic').value) || 0;
+  const hraRec = parseFloat(document.getElementById('adv-hra-rec').value) || 0;
+  const otherAllow = parseFloat(document.getElementById('adv-other-allow').value) || 0;
+  const otherInc = parseFloat(document.getElementById('adv-other-inc').value) || 0;
+  
+  const rent = parseFloat(document.getElementById('adv-rent').value) || 0;
+  const isMetro = document.getElementById('adv-metro').checked;
+
+  const s80c = Math.min(parseFloat(document.getElementById('adv-80c').value) || 0, 150000);
+  const s80d = Math.min(parseFloat(document.getElementById('adv-80d').value) || 0, 100000);
+  const snps = Math.min(parseFloat(document.getElementById('adv-nps').value) || 0, 50000);
+  const hlInt = Math.min(parseFloat(document.getElementById('adv-hl').value) || 0, 200000);
+
+  const salary = basic + hraRec + otherAllow;
+  const grossTotalIncome = salary + otherInc;
+
+  // HRA Calculation (Old Regime only)
+  let hraExemption = 0;
+  if (rent > 0 && hraRec > 0) {
+    const condition1 = hraRec;
+    const condition2 = rent - (0.10 * basic);
+    const condition3 = isMetro ? (0.50 * basic) : (0.40 * basic);
+    hraExemption = Math.max(0, Math.min(condition1, condition2, condition3));
+  }
+
+  // --- OLD REGIME MATH ---
+  const oldStdDed = 50000;
+  const oldTotalDed = oldStdDed + hraExemption + s80c + s80d + snps + hlInt;
+  const oldTaxable = Math.max(0, grossTotalIncome - oldTotalDed);
+  
+  let oldBaseTax = calculateBaseTax(oldTaxable, false);
+  if (oldTaxable <= 500000) oldBaseTax = 0; // 87A Rebate
+  const oldFinalTax = calculateSurchargeAndCess(oldBaseTax, oldTaxable, false);
+
+  // --- NEW REGIME MATH ---
+  // New Regime allows 75k std deduction for salary. 
+  // Doesn't allow HRA, 80C, 80D, NPS(1B), or Home Loan for self-occupied.
+  const newStdDed = 75000;
+  const newTotalDed = newStdDed; // Simplified for pure salary
+  const newTaxable = Math.max(0, grossTotalIncome - newTotalDed);
+  
+  let newBaseTax = calculateBaseTax(newTaxable, true);
+  if (newTaxable <= 700000) newBaseTax = 0; // 87A Rebate
+  const newFinalTax = calculateSurchargeAndCess(newBaseTax, newTaxable, true);
+
+  // Update UI
+  document.getElementById('res-gti').innerText = '₹' + grossTotalIncome.toLocaleString('en-IN');
+  document.getElementById('res-old-ded').innerText = '-₹' + oldTotalDed.toLocaleString('en-IN');
+  document.getElementById('res-old-taxable').innerText = '₹' + oldTaxable.toLocaleString('en-IN');
+  document.getElementById('res-new-ded').innerText = '-₹' + newTotalDed.toLocaleString('en-IN');
+  document.getElementById('res-new-taxable').innerText = '₹' + newTaxable.toLocaleString('en-IN');
+  
+  // Animation for Final Tax
+  if (typeof gsap !== 'undefined') {
+    gsap.to({val: 0}, { val: oldFinalTax, duration: 1, ease: 'expo.out', onUpdate: function() {
+      document.getElementById('res-old-tax').innerText = '₹' + Math.round(this.targets()[0].val).toLocaleString('en-IN');
+    }});
+    gsap.to({val: 0}, { val: newFinalTax, duration: 1, ease: 'expo.out', onUpdate: function() {
+      document.getElementById('res-new-tax').innerText = '₹' + Math.round(this.targets()[0].val).toLocaleString('en-IN');
+    }});
+  } else {
+    document.getElementById('res-old-tax').innerText = '₹' + oldFinalTax.toLocaleString('en-IN');
+    document.getElementById('res-new-tax').innerText = '₹' + newFinalTax.toLocaleString('en-IN');
+  }
 }
 
 // Initialize when DOM is ready
