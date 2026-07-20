@@ -185,8 +185,8 @@ app.post('/api/signup', async (req, res) => {
             sendOtpEmail(result.rows[0].id);
         }
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: "Server error" });
+        console.error("Signup Error:", err);
+        res.status(500).json({ error: "Server error: " + err.message });
     }
 });
 
