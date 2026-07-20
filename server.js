@@ -27,23 +27,14 @@ const storage = new CloudinaryStorage({
 const upload = multer({ storage: storage });
 
 // Email Transporter Setup
-let transporter;
-nodemailer.createTestAccount((err, account) => {
-    if (err) {
-        console.error('Failed to create a testing account. ' + err.message);
-        return;
+let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS
     }
-    transporter = nodemailer.createTransport({
-        host: account.smtp.host,
-        port: account.smtp.port,
-        secure: account.smtp.secure,
-        auth: {
-            user: account.user,
-            pass: account.pass
-        }
-    });
-    console.log('Ethereal Email transporter is ready.');
 });
+console.log('Real Email transporter is configured.');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -168,7 +159,7 @@ app.post('/api/signup', async (req, res) => {
                     else console.log('OTP Preview URL: %s', nodemailer.getTestMessageUrl(info));
                 });
             }
-            res.json({ message: "OTP generated for testing. Check the console, or use this OTP: " + otpCode, otp: otpCode });
+            res.json({ message: "OTP sent to your email. Please verify." });
         };
 
         if (row && !row.is_verified) {
