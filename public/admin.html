@@ -67,6 +67,9 @@
       <button onclick="showTab('blogs')" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100 font-bold rounded-lg text-left">
         <span class="material-symbols-outlined text-lg">article</span> Add Blog Post
       </button>
+      <button onclick="showTab('documents')" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100 font-bold rounded-lg text-left">
+        <span class="material-symbols-outlined text-lg">folder</span> Client Documents
+      </button>
     </nav>
     <div class="p-4 border-t border-gray-200">
       <button onclick="adminLogout()" class="w-full flex items-center gap-2 text-red-500 hover:bg-red-50 px-4 py-2 rounded-lg font-bold">
@@ -138,6 +141,25 @@
             </tr>
           </thead>
           <tbody id="user-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Documents Tab -->
+    <div id="tab-documents" class="tab-content hidden">
+      <h1 class="text-3xl font-headline font-bold mb-8">Client Documents</h1>
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-gray-50 text-gray-600 text-sm border-b border-gray-200">
+              <th class="p-4">File</th>
+              <th class="p-4">Client</th>
+              <th class="p-4">Upload Date</th>
+              <th class="p-4">Status</th>
+              <th class="p-4">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="doc-table-body"></tbody>
         </table>
       </div>
     </div>
@@ -299,6 +321,33 @@
             `;
           });
         }
+
+        // Documents
+        const docRes = await fetchWithAuth('/api/admin/documents');
+        if(docRes.ok) {
+          const docs = await docRes.json();
+          const tbody = document.getElementById('doc-table-body');
+          tbody.innerHTML = '';
+          docs.forEach(doc => {
+            const date = new Date(doc.created_at).toLocaleDateString();
+            tbody.innerHTML += `
+              <tr class="border-b border-gray-100 hover:bg-gray-50">
+                <td class="p-4 font-bold text-primary-teal"><a href="/${doc.filepath}" target="_blank" class="hover:underline flex items-center gap-2"><span class="material-symbols-outlined text-sm">description</span>${doc.filename}</a></td>
+                <td class="p-4"><p>${doc.user_name}</p><p class="text-xs text-gray-500">${doc.user_email}</p></td>
+                <td class="p-4">${date}</td>
+                <td class="p-4 font-bold">${doc.status}</td>
+                <td class="p-4">
+                  <select onchange="updateDocStatus(${doc.id}, this.value)" class="border border-gray-300 rounded p-1 text-sm bg-gray-50 focus:outline-none">
+                    <option value="" disabled selected>Change Status</option>
+                    <option value="Uploaded">Uploaded</option>
+                    <option value="Processing">Processing</option>
+                    <option value="Completed">Completed</option>
+                  </select>
+                </td>
+              </tr>
+            `;
+          });
+        }
       } catch (e) {
         console.error("Dashboard error", e);
       }
@@ -326,6 +375,24 @@
           document.getElementById('blog-image').value = '';
         } else {
           alert("Failed to publish");
+        }
+      } catch(e) {
+        alert("Network error");
+      }
+    }
+
+    async function updateDocStatus(docId, status) {
+      if(!status) return;
+      try {
+        const res = await fetchWithAuth(`/api/admin/documents/${docId}/status`, {
+          method: 'PUT',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({status})
+        });
+        if(res.ok) {
+          loadDashboardData();
+        } else {
+          alert("Failed to update status");
         }
       } catch(e) {
         alert("Network error");
