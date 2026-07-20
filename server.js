@@ -115,7 +115,7 @@ const initDB = async () => {
         )`);
         console.log("Connected to PostgreSQL Database and verified tables.");
     } catch (err) {
-        console.error("Database initialization error. Please check your Supabase DATABASE_URL.");
+        console.error("Database initialization error:", err.message, "| Please check your Supabase DATABASE_URL.");
     }
 };
 initDB();
