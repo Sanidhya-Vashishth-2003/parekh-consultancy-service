@@ -168,7 +168,7 @@ app.post('/api/signup', async (req, res) => {
                     else console.log('OTP Preview URL: %s', nodemailer.getTestMessageUrl(info));
                 });
             }
-            res.json({ message: "OTP sent to email. Please verify." });
+            res.json({ message: "OTP generated for testing. Check the console, or use this OTP: " + otpCode, otp: otpCode });
         };
 
         if (row && !row.is_verified) {
