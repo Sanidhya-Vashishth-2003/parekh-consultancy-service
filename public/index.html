@@ -1618,97 +1618,117 @@ function initThreeParticles() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  try {
+    // Initialize Lenis Smooth Scroll
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        direction: 'vertical',
+        gestureDirection: 'vertical',
+        smooth: true,
+        mouseMultiplier: 1,
+        smoothTouch: false,
+        touchMultiplier: 2,
+        infinite: false,
+      });
 
-  // Initialize Lenis Smooth Scroll
-  const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    direction: 'vertical',
-    gestureDirection: 'vertical',
-    smooth: true,
-    mouseMultiplier: 1,
-    smoothTouch: false,
-    touchMultiplier: 2,
-    infinite: false,
-  });
-
-  function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-  }
-  requestAnimationFrame(raf);
-
-  // Sync GSAP ScrollTrigger with Lenis
-  lenis.on('scroll', ScrollTrigger.update);
-
-  gsap.ticker.add((time)=>{
-    lenis.raf(time * 1000);
-  });
-
-  gsap.ticker.lagSmoothing(0);
-
-  // Initialize Three.js
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!prefersReducedMotion) {
-    initThreeParticles();
-  }
-
-  // ===== CINEMATIC INTRO (GSAP Timeline â€” ~3s total) =====
-  document.body.classList.add('intro-active');
-  
-  // Create intro particles
-  const introParticlesEl = document.getElementById('intro-particles');
-  const particleFrag = document.createDocumentFragment();
-  for (let i = 0; i < 12; i++) {
-    const p = document.createElement('div');
-    p.className = 'intro-particle';
-    p.style.left = Math.random() * 100 + '%';
-    p.style.top = Math.random() * 100 + '%';
-    particleFrag.appendChild(p);
-  }
-  introParticlesEl.appendChild(particleFrag);
-
-  // Animate intro particles
-  gsap.fromTo('.intro-particle', 
-    { scale: 0, opacity: 0 },
-    { 
-      scale: () => gsap.utils.random(1, 2.5),
-      opacity: () => gsap.utils.random(0.2, 0.7),
-      x: () => gsap.utils.random(-60, 60),
-      duration: () => gsap.utils.random(1.5, 3),
-      stagger: { each: 0.05, from: 'random' },
-      ease: 'power2.out',
-      yoyo: true,
-      repeat: 1
-    }
-  );
-
-  // Main intro timeline
-  const introTl = gsap.timeline({ defaults: { ease: 'expo.out' } });
-
-  introTl
-    .fromTo('#intro-logo', { opacity: 0, scale: 0.3, rotateY: 90 }, { opacity: 1, scale: 1, rotateY: 0, duration: 0.8, ease: 'back.out(1.7)' })
-    .fromTo('#intro-line', { width: '0px', opacity: 0 }, { width: '180px', opacity: 1, duration: 0.5, ease: 'power4.inOut' }, '-=0.3')
-    .fromTo('#intro-tagline', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.2')
-    .to(['#intro-logo', '#intro-tagline', '#intro-line'], { opacity: 0, scale: 0.85, duration: 0.4, delay: 0.5, ease: 'power2.in' })
-    .to('.intro-particle', { opacity: 0, duration: 0.25 }, '-=0.3')
-    .to('.intro-panel-left', { xPercent: -100, duration: 0.7, ease: 'power4.inOut' })
-    .to('.intro-panel-right', { xPercent: 100, duration: 0.7, ease: 'power4.inOut' }, '-=0.7')
-    .to('#intro-overlay', { 
-      opacity: 0, duration: 0.15,
-      onComplete: () => {
-        const overlay = document.getElementById('intro-overlay');
-        overlay.style.display = 'none';
-        overlay.style.pointerEvents = 'none';
-        introParticlesEl.innerHTML = '';
-        document.body.classList.remove('intro-active');
-        animateHeroSection();
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
       }
+      requestAnimationFrame(raf);
+
+      if (typeof ScrollTrigger !== 'undefined') {
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time)=>{
+          lenis.raf(time * 1000);
+        });
+        gsap.ticker.lagSmoothing(0);
+      }
+    }
+
+    // Initialize Three.js
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let introParticlesEl = document.getElementById('intro-particles');
+    
+    if (typeof THREE !== 'undefined' && !prefersReducedMotion) {
+      initThreeParticles();
+    }
+    
+    document.body.classList.add('intro-active');
+
+    // Create custom particle divs for GSAP intro
+    if (introParticlesEl) {
+      for(let i=0; i<40; i++) {
+        let p = document.createElement('div');
+        p.className = 'intro-particle';
+        introParticlesEl.appendChild(p);
+      }
+    }
+
+    if (typeof gsap === 'undefined') throw new Error("GSAP not loaded");
+
+    gsap.fromTo('.intro-particle', 
+      {
+        x: '50vw', y: '50vh', scale: 0, opacity: 0
+      },
+      {
+        scale: () => gsap.utils.random(1, 2.5),
+        opacity: () => gsap.utils.random(0.2, 0.7),
+        x: () => gsap.utils.random(-60, 60),
+        y: () => gsap.utils.random(-60, 60),
+        duration: () => gsap.utils.random(1.5, 3),
+        ease: 'power3.out',
+        stagger: {
+          amount: 0.5,
+          from: 'random'
+        }
+      }
+    );
+
+    const introTl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+
+    introTl
+      .fromTo('#intro-logo', { opacity: 0, scale: 0.3, rotateY: 90 }, { opacity: 1, scale: 1, rotateY: 0, duration: 0.8, ease: 'back.out(1.7)' })
+      .fromTo('#intro-line', { width: '0px', opacity: 0 }, { width: '180px', opacity: 1, duration: 0.5, ease: 'power4.inOut' }, '-=0.3')
+      .fromTo('#intro-tagline', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.2')
+      .to(['#intro-logo', '#intro-tagline', '#intro-line'], { opacity: 0, scale: 0.85, duration: 0.4, delay: 0.5, ease: 'power2.in' })
+      .to('.intro-particle', { opacity: 0, duration: 0.25 }, '-=0.3')
+      .to('.intro-panel-left', { xPercent: -100, duration: 0.7, ease: 'power4.inOut' })
+      .to('.intro-panel-right', { xPercent: 100, duration: 0.7, ease: 'power4.inOut' }, '-=0.7')
+      .to('#intro-overlay', { 
+        opacity: 0, duration: 0.15,
+        onComplete: () => {
+          const overlay = document.getElementById('intro-overlay');
+          if(overlay) overlay.style.display = 'none';
+          document.body.classList.remove('intro-active');
+          animateHeroSection();
+        }
+      });
+  } catch (err) {
+    console.error("Animation failed to initialize:", err);
+    // Fallback: immediately remove intro overlay
+    const overlay = document.getElementById('intro-overlay');
+    if (overlay) overlay.style.display = 'none';
+    document.body.classList.remove('intro-active');
+    
+    // Attempt to still show hero content
+    document.querySelectorAll('#navbar, #hero .order-2, #hero [style*="float"], .decorative-circle').forEach(el => {
+      el.style.opacity = 1;
+      el.style.transform = 'none';
     });
+    if (typeof animateHeroSection === 'function') animateHeroSection();
+  }
 
   // ===== HERO ENTRANCE (GSAP) =====
   function animateHeroSection() {
-    document.getElementById('preloader').classList.add('loaded');
+    if (typeof gsap === 'undefined') return;
+    
+    const preloaderEl = document.getElementById('preloader');
+    if (preloaderEl) {
+      preloaderEl.classList.add('loaded');
+    }
 
     // Navbar
     gsap.fromTo('#navbar', { y: -60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'expo.out', delay: 0.05 });
